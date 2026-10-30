@@ -1,6 +1,7 @@
 import { IFactura } from '../Entidades/Factura';
 import { ApiClient } from '../api';
 import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 export class ControllersFactura {
   Lista: IFactura[];
@@ -158,72 +159,58 @@ export class ControllersFactura {
     doc.text(factura.cliente?.telefono || '0991234567', margin + 128, clientY + 17.5);
 
     // ==========================================
-    // 4. TABLA DE SERVICIOS COMPLETADOS
+    // 4. TABLA DE SERVICIOS COMPLETADOS (CON AUTOTABLE)
     // ==========================================
-    let tableY = 84;
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9);
-    doc.setTextColor(15, 23, 42);
-    doc.text('DETALLE DE SERVICIOS DE TRANSPORTE LIQUIDADOS', margin, tableY);
-
-    tableY += 4;
-    // Cabecera de la tabla
-    doc.setFillColor(30, 41, 59); // Slate-800 elegante
-    doc.rect(margin, tableY, contentWidth, 7, 'F');
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7.5);
-    doc.setTextColor(255, 255, 255);
-    doc.text('CÓDIGO', margin + 3, tableY + 4.8);
-    doc.text('DESCRIPCIÓN DE LA RUTA Y TRANSPORTE', margin + 28, tableY + 4.8);
-    doc.text('VEHÍCULO', margin + 105, tableY + 4.8);
-    doc.text('TARIFA BASE', margin + 138, tableY + 4.8);
-    doc.text('RECARGOS', margin + 162, tableY + 4.8);
-
-    tableY += 7;
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-
-    const detalles = factura.detalles || [];
-    detalles.forEach((d, idx) => {
-      // Zebra striping
-      if (idx % 2 === 0) {
-        doc.setFillColor(255, 255, 255);
-      } else {
-        doc.setFillColor(248, 250, 252);
-      }
-      doc.rect(margin, tableY, contentWidth, 7.5, 'F');
-
+    const tableBody = (factura.detalles || []).map((d) => {
       const s = d.servicio;
       const cod = s?.codigo || d.servicioId?.substring(0, 8) || 'SRV-001';
-      const ruta = s ? `${s.origen} → ${s.destino} (${s.distanciaKm} km - ${s.pesoCargaKg} kg)` : 'Servicio de Carga Liquidado';
-      const vehiculo = s?.vehiculo ? `${s.vehiculo.placa} (${s.vehiculo.marca})` : 'Flota Asignada';
-      const tarifa = Number(d.tarifa).toFixed(2);
-      const recargo = Number(d.recargos).toFixed(2);
+      const ruta = s 
+        ? `${s.origen} a ${s.destino}\n(${s.distanciaKm} km  |  ${Number(s.pesoCargaKg).toLocaleString()} kg)` 
+        : 'Servicio de Carga Liquidado';
+      const vehiculo = s?.vehiculo 
+        ? `${s.vehiculo.placa}\n${s.vehiculo.marca} ${s.vehiculo.modelo}` 
+        : 'Flota Asignada';
+      const tarifa = `$${Number(d.tarifa).toFixed(2)}`;
+      const recargo = `$${Number(d.recargos).toFixed(2)}`;
 
-      doc.setTextColor(37, 99, 235);
-      doc.setFont('helvetica', 'bold');
-      doc.text(cod, margin + 3, tableY + 5);
-
-      doc.setTextColor(51, 65, 85);
-      doc.setFont('helvetica', 'normal');
-      doc.text(ruta.substring(0, 44), margin + 28, tableY + 5);
-      doc.text(vehiculo.substring(0, 18), margin + 105, tableY + 5);
-
-      doc.text(`$${tarifa}`, margin + 152, tableY + 5, { align: 'right' });
-      doc.text(`$${recargo}`, margin + 178, tableY + 5, { align: 'right' });
-
-      tableY += 7.5;
+      return [cod, ruta, vehiculo, tarifa, recargo];
     });
 
-    // Línea separadora
-    doc.setDrawColor(203, 213, 225);
-    doc.line(margin, tableY, margin + contentWidth, tableY);
+    autoTable(doc, {
+      startY: 83,
+      head: [['CÓDIGO', 'DESCRIPCIÓN DE LA RUTA Y TRANSPORTE', 'VEHÍCULO ASIGNADO', 'TARIFA BASE', 'RECARGOS']],
+      body: tableBody,
+      theme: 'grid',
+      headStyles: {
+        fillColor: [30, 41, 59], // Slate-800
+        textColor: [255, 255, 255],
+        fontSize: 7.8,
+        fontStyle: 'bold',
+        halign: 'left',
+        cellPadding: 2.5,
+      },
+      bodyStyles: {
+        fontSize: 7.5,
+        textColor: [51, 65, 85],
+        cellPadding: 2.5,
+        lineColor: [226, 232, 240],
+      },
+      columnStyles: {
+        0: { cellWidth: 26, fontStyle: 'bold', textColor: [37, 99, 235] },
+        1: { cellWidth: 70 },
+        2: { cellWidth: 36 },
+        3: { cellWidth: 25, halign: 'right' },
+        4: { cellWidth: 25, halign: 'right' },
+      },
+      styles: {
+        overflow: 'linebreak',
+        valign: 'middle',
+      },
+      margin: { left: margin, right: margin },
+    });
 
-    // ==========================================
-    // 5. RESUMEN FINANCIERO Y TOTALES (REQ-04)
-    // ==========================================
-    tableY += 8;
+    // Posición dinámica después de la tabla
+    let tableY = ((doc as any).lastAutoTable?.finalY || 130) + 7;
 
     // Caja izquierda: Observaciones y reglas de negocio aplicadas
     const notesWidth = 92;
