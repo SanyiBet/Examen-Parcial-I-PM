@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Patch, Param, Body, Query, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { VehiculosService } from './vehiculos.service';
 import { VehiculoEntity, TipoVehiculo } from '../entities/vehiculo.entity';
 import { AuthGuard } from '@nestjs/passport';
@@ -13,6 +13,8 @@ export class VehiculosController {
 
   @Get()
   @ApiOperation({ summary: 'Listar todos los vehículos' })
+  @ApiQuery({ name: 'tipo', required: false, enum: ['CamionCarga', 'FurgonetaElectrica'], description: 'Filtrar por tipo de propulsión (opcional)' })
+  @ApiQuery({ name: 'placa', required: false, type: String, description: 'Buscar por placa del vehículo (opcional)' })
   async findAll(@Query('tipo') tipo?: TipoVehiculo, @Query('placa') placa?: string) {
     return this.vehiculosService.findAll(tipo, placa);
   }

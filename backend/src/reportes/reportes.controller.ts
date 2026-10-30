@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { ReportesService } from './reportes.service';
 
 @ApiTags('reportes')
@@ -9,6 +9,9 @@ export class ReportesController {
 
   @Get('rentabilidad')
   @ApiOperation({ summary: 'Indicadores generales y métricas para el Dashboard de Rentabilidad' })
+  @ApiQuery({ name: 'anio', required: false, type: Number, description: 'Año a filtrar (opcional)' })
+  @ApiQuery({ name: 'mes', required: false, type: Number, description: 'Mes a filtrar (1-12, opcional)' })
+  @ApiQuery({ name: 'tipoVehiculo', required: false, enum: ['CamionCarga', 'FurgonetaElectrica'], description: 'Tipo de vehículo (opcional)' })
   async getDashboardRentabilidad(
     @Query('anio') anio?: number,
     @Query('mes') mes?: number,
@@ -44,6 +47,8 @@ export class ReportesController {
 
   @Get('consulta-4')
   @ApiOperation({ summary: '24. Vehículos sin servicios asignados durante un rango de fechas' })
+  @ApiQuery({ name: 'desde', required: false, type: String, description: 'Fecha inicio YYYY-MM-DD (opcional)' })
+  @ApiQuery({ name: 'hasta', required: false, type: String, description: 'Fecha fin YYYY-MM-DD (opcional)' })
   async getConsulta4(@Query('desde') desde?: string, @Query('hasta') hasta?: string) {
     return this.reportesService.getConsulta4VehiculosSinServicios(desde, hasta);
   }
