@@ -33,13 +33,38 @@
       <div class="form-row">
         <div class="form-group col-md-6">
           <label class="form-label" for="s-origen">Origen *</label>
-          <input type="text" id="s-origen" class="form-control" placeholder="Ej: Quito Terminal Sur" required>
+          <input type="text" id="s-origen" list="ciudades-ecuador" class="form-control" placeholder="Ej: Quito, Guayaquil, Cuenca, Machala o escriba..." required>
         </div>
 
         <div class="form-group col-md-6">
           <label class="form-label" for="s-destino">Destino *</label>
-          <input type="text" id="s-destino" class="form-control" placeholder="Ej: Guayaquil Puerto" required>
+          <input type="text" id="s-destino" list="ciudades-ecuador" class="form-control" placeholder="Ej: Guayaquil, Machala, Cuenca, Quito o escriba..." required>
         </div>
+      </div>
+
+      <!-- Datalist de ciudades sugeridas con selector nativo -->
+      <datalist id="ciudades-ecuador">
+        <option value="Machala"></option>
+        <option value="Guayaquil"></option>
+        <option value="Cuenca"></option>
+        <option value="Quito"></option>
+      </datalist>
+
+      <!-- Botones de rutas sugeridas rápidas con distancia precargada -->
+      <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+        <span style="font-size: 11px; font-weight: 600; color: #64748b;">Rutas sugeridas:</span>
+        <button type="button" class="btn btn-sm btn-outline btn-preset-ruta" data-origen="Quito" data-destino="Guayaquil" data-distancia="420" style="font-size: 11px; padding: 3px 8px;">
+          📍 Quito ➔ Guayaquil (420 km)
+        </button>
+        <button type="button" class="btn btn-sm btn-outline btn-preset-ruta" data-origen="Guayaquil" data-destino="Machala" data-distancia="180" style="font-size: 11px; padding: 3px 8px;">
+          📍 Guayaquil ➔ Machala (180 km)
+        </button>
+        <button type="button" class="btn btn-sm btn-outline btn-preset-ruta" data-origen="Cuenca" data-destino="Machala" data-distancia="170" style="font-size: 11px; padding: 3px 8px;">
+          📍 Cuenca ➔ Machala (170 km)
+        </button>
+        <button type="button" class="btn btn-sm btn-outline btn-preset-ruta" data-origen="Quito" data-destino="Cuenca" data-distancia="440" style="font-size: 11px; padding: 3px 8px;">
+          📍 Quito ➔ Cuenca (440 km)
+        </button>
       </div>
 
       <div class="form-row">

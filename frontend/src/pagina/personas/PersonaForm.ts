@@ -1,6 +1,7 @@
 import template from './PersonaForm.html?raw';
 import './PersonaForm.css';
 import { ListaPersonas } from '../../Controlador/ControllersPersona';
+import { ListaClientes } from '../../Controlador/ControllersCliente';
 import { Persona, Sexo, EstadoCivil } from '../../Entidades/Persona';
 
 export class PersonaForm {
@@ -89,12 +90,28 @@ export class PersonaForm {
       ListaPersonas.AgregarPersona(persona);
     }
 
+    // Sincronización automática con la tabla clientes de PostgreSQL
+    const syncCliente = (container.querySelector('#p-sincronizar-cliente') as HTMLInputElement)?.checked;
+    if (syncCliente) {
+      ListaClientes.AgregarCliente({
+        id: '',
+        identificacion: cedula,
+        nombre: `${nombres} ${apellidos}`,
+        correo: `${nombres.toLowerCase().replace(/\s+/g, '')}@translogic.com`,
+        telefono: '0991234567',
+      }).catch(err => {
+        console.warn('Nota: Ya registrado en PostgreSQL o aviso de unicidad:', err);
+      });
+    }
+
     console.log(persona.ImprimirPersona());
     console.table(ListaPersonas.Lista);
 
     alertBox.style.display = 'block';
     alertBox.className = 'alert-box alert-success';
-    alertBox.textContent = 'Persona guardada exitosamente en el controlador ListaPersonas';
+    alertBox.textContent = syncCliente 
+      ? 'Persona guardada y registrada en PostgreSQL (tabla clientes)' 
+      : 'Persona guardada exitosamente';
 
     setTimeout(() => {
       if (this.onGuardadoCallback) this.onGuardadoCallback();

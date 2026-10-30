@@ -11,6 +11,7 @@ import { FacturaForm } from './pagina/facturas/FacturaForm';
 import { ReportesPage } from './pagina/reportes/Reportes';
 import { PersonaList } from './pagina/personas/PersonaList';
 import { PersonaForm } from './pagina/personas/PersonaForm';
+import { ClienteList } from './pagina/clientes/ClienteList';
 import { IVehiculo } from './Entidades/Vehiculo';
 import { Persona } from './Entidades/Persona';
 
@@ -23,6 +24,7 @@ type VistaApp =
   | 'facturas-list'
   | 'facturas-form'
   | 'reportes'
+  | 'clientes-list'
   | 'personas-list'
   | 'personas-form'
   | 'login';
@@ -41,6 +43,7 @@ class App {
   private facturaListPage: FacturaList;
   private facturaFormPage: FacturaForm;
   private reportesPage: ReportesPage;
+  private clienteListPage: ClienteList;
   private personaListPage: PersonaList;
   private personaFormPage: PersonaForm;
 
@@ -142,6 +145,8 @@ class App {
         this.render();
       },
     });
+
+    this.clienteListPage = new ClienteList();
   }
 
   public init() {
@@ -191,6 +196,9 @@ class App {
             </button>
             <button class="nav-item ${this.currentView === 'reportes' ? 'active' : ''}" data-nav="reportes">
               <span class="nav-icon">📈</span> Consultas Avanzadas (8)
+            </button>
+            <button class="nav-item ${this.currentView === 'clientes-list' ? 'active' : ''}" data-nav="clientes-list">
+              <span class="nav-icon">🏢</span> Clientes / Socios
             </button>
             <button class="nav-item ${this.currentView.startsWith('personas') ? 'active' : ''}" data-nav="personas-list">
               <span class="nav-icon">👥</span> Personal / Conductores
@@ -252,6 +260,8 @@ class App {
         return 'Módulo de Facturación Simulada';
       case 'reportes':
         return 'Consultas Avanzadas y Reportes Operativos';
+      case 'clientes-list':
+        return 'Gestión de Clientes y Socios Comerciales (PostgreSQL)';
       case 'personas-list':
       case 'personas-form':
         return 'Controlador de Personal y Conductores';
@@ -307,6 +317,9 @@ class App {
         break;
       case 'reportes':
         await this.reportesPage.render(container);
+        break;
+      case 'clientes-list':
+        await this.clienteListPage.render(container);
         break;
       case 'personas-list':
         this.personaListPage.render(container);

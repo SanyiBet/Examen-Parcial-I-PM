@@ -56,8 +56,54 @@ export class ServicioForm {
     const checkRecarga = container.querySelector('#s-recarga-planificada') as HTMLInputElement;
     const btnRecalcular = container.querySelector('#btn-recalcular-tarifa');
 
+    const inputOrigen = container.querySelector('#s-origen') as HTMLInputElement;
+    const inputDestino = container.querySelector('#s-destino') as HTMLInputElement;
+
     btnCancelar?.addEventListener('click', () => {
       if (this.onCancelarCallback) this.onCancelarCallback();
+    });
+
+    // Auto-cálculo de distancia entre ciudades de Ecuador sugeridas
+    const actualizarDistanciaSugerida = () => {
+      const orig = inputOrigen?.value.trim().toLowerCase();
+      const dest = inputDestino?.value.trim().toLowerCase();
+      if (!orig || !dest) return;
+
+      const distancias: Record<string, number> = {
+        'quito-guayaquil': 420, 'guayaquil-quito': 420,
+        'quito-cuenca': 440, 'cuenca-quito': 440,
+        'quito-machala': 515, 'machala-quito': 515,
+        'guayaquil-machala': 180, 'machala-guayaquil': 180,
+        'guayaquil-cuenca': 195, 'cuenca-guayaquil': 195,
+        'cuenca-machala': 170, 'machala-cuenca': 170,
+      };
+
+      const clave = `${orig}-${dest}`;
+      if (distancias[clave]) {
+        inputDistancia.value = String(distancias[clave]);
+        this.simularTarifa(container);
+      }
+    };
+
+    inputOrigen?.addEventListener('change', actualizarDistanciaSugerida);
+    inputDestino?.addEventListener('change', actualizarDistanciaSugerida);
+    inputOrigen?.addEventListener('input', actualizarDistanciaSugerida);
+    inputDestino?.addEventListener('input', actualizarDistanciaSugerida);
+
+    // Botones de presets rápidos
+    container.querySelectorAll('.btn-preset-ruta').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLElement;
+        const orig = target.dataset.origen || '';
+        const dest = target.dataset.destino || '';
+        const dist = target.dataset.distancia || '';
+
+        if (inputOrigen) inputOrigen.value = orig;
+        if (inputDestino) inputDestino.value = dest;
+        if (inputDistancia) inputDistancia.value = dist;
+
+        this.simularTarifa(container);
+      });
     });
 
     selectVehiculo?.addEventListener('change', () => {
