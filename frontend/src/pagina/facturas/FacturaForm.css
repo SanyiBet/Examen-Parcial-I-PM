@@ -1,0 +1,62 @@
+.factura-form-page {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.servicios-disponibles-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 18px;
+  margin: 18px 0;
+}
+
+.section-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.service-check-item {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.service-check-item:hover {
+  background: #f1f5f9;
+}
+
+.service-check-info {
+  flex: 1;
+}
+
+.resumen-factura-box {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.reglas-info-box {
+  background: #eff6ff;
+  border-left: 4px solid #3b82f6;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: #1e3a8a;
+}
+
+.reglas-info-box ul {
+  padding-left: 18px;
+  margin-top: 4px;
+}

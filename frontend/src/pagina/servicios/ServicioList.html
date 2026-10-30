@@ -1,0 +1,87 @@
+<div class="servicios-list-page">
+  <div class="page-title-bar">
+    <div>
+      <h2 class="page-title">Planificación y Servicios de Transporte</h2>
+      <p class="page-subtitle">Despacho, asignación vehicular, control de kilometraje y estados operativos</p>
+    </div>
+    <button id="btn-crear-servicio" class="btn btn-primary">
+      <span>➕</span> Nuevo Servicio
+    </button>
+  </div>
+
+  <!-- Barra de Filtros -->
+  <div class="search-filter-card">
+    <div class="search-box">
+      <input type="text" id="servicio-search" class="form-control" placeholder="Buscar por código, cliente, origen o destino...">
+    </div>
+    <div class="filter-box">
+      <select id="servicio-estado-filter" class="form-select">
+        <option value="">Todos los estados</option>
+        <option value="Programado">Programado</option>
+        <option value="En ejecucion">En ejecución</option>
+        <option value="Completado">Completado</option>
+        <option value="Cancelado">Cancelado</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Modal para Reasignar Vehículo -->
+  <div id="modal-reasignar" class="modal-backdrop" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-reasignar-title">Reasignar Vehículo</h3>
+        <button id="modal-reasignar-close" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="reasignar-servicio-id">
+        <div class="form-group">
+          <label class="form-label" for="reasignar-vehiculo-select">Seleccione nuevo vehículo disponible:</label>
+          <select id="reasignar-vehiculo-select" class="form-select">
+            <!-- Cargado dinámicamente -->
+          </select>
+          <small class="form-text">El sistema validará automáticamente la no existencia de cruces de horario.</small>
+        </div>
+        <div id="modal-reasignar-alert" class="alert-box" style="display: none;"></div>
+        <div class="form-actions mt-3">
+          <button id="btn-confirmar-reasignacion" class="btn btn-primary">Confirmar Asignación</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para ver Historial de Estados (Auditoría Req-03) -->
+  <div id="modal-historial" class="modal-backdrop" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-historial-title">Trazabilidad y Auditoría de Estados</h3>
+        <button id="modal-historial-close" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modal-historial-content">
+          <!-- Renderizado dinámico -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de Servicios -->
+  <div class="table-responsive">
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Cliente</th>
+          <th>Ruta (Origen → Destino)</th>
+          <th>Vehículo Asignado</th>
+          <th>Distancia / Peso</th>
+          <th>Tarifa Total</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="servicios-table-body">
+        <tr><td colspan="8" class="text-center py-4">Cargando servicios de transporte...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+.servicio-form-page {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.tarifa-simulada-box {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.tarifa-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.tarifa-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.tarifa-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tarifa-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13.5px;
+  color: #475569;
+}
+
+.total-row {
+  border-top: 1px solid #cbd5e1;
+  padding-top: 10px;
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.form-check-box {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 14px 0;
+}
+
+.check-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  color: #1e40af;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.sim-alert {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+}

@@ -1,0 +1,111 @@
+<div class="vehiculo-form-page">
+  <div class="form-card">
+    <div class="form-header">
+      <h2 id="form-vehiculo-title" class="form-title">Registrar Nuevo Vehículo</h2>
+      <p class="form-subtitle">Complete las especificaciones técnicas del vehículo de carga o eléctrico</p>
+    </div>
+
+    <form id="vehiculo-form" novalidate>
+      <input type="hidden" id="v-id">
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label class="form-label" for="v-tipo">Tipo de Vehículo *</label>
+          <select id="v-tipo" class="form-select" required>
+            <option value="CamionCarga">Camión de Carga (Combustión Diésel)</option>
+            <option value="FurgonetaElectrica">Furgoneta Eléctrica (Batería)</option>
+          </select>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label class="form-label" for="v-placa">Placa Única *</label>
+          <input type="text" id="v-placa" class="form-control" placeholder="Ej: PBX-1024" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label class="form-label" for="v-marca">Marca *</label>
+          <input type="text" id="v-marca" class="form-control" placeholder="Ej: Volvo, Ford, BYD" required>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label class="form-label" for="v-modelo">Modelo *</label>
+          <input type="text" id="v-modelo" class="form-control" placeholder="Ej: FH 540, E-Transit" required>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label class="form-label" for="v-anio">Año *</label>
+          <input type="number" id="v-anio" class="form-control" value="2024" min="2000" max="2027" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label class="form-label" for="v-capacidad">Capacidad de Carga Autorizada (Kg) *</label>
+          <input type="number" id="v-capacidad" class="form-control" placeholder="Ej: 28000" min="100" required>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label class="form-label" for="v-kilometraje">Kilometraje Actual (Km)</label>
+          <input type="number" id="v-kilometraje" class="form-control" value="0" min="0">
+        </div>
+      </div>
+
+      <!-- Campos específicos de Camión de Carga -->
+      <div id="seccion-camion" class="tipo-fields-section">
+        <h4 class="section-title">⚙️ Parámetros de Combustión y Mantenimiento</h4>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label class="form-label" for="v-consumo-litros">Consumo (Litros / 100 Km) *</label>
+            <input type="number" step="0.1" id="v-consumo-litros" class="form-control" placeholder="32.5">
+          </div>
+          <div class="form-group col-md-4">
+            <label class="form-label" for="v-precio-litro">Precio por Litro ($ USD) *</label>
+            <input type="number" step="0.01" id="v-precio-litro" class="form-control" value="1.15">
+          </div>
+          <div class="form-group col-md-4">
+            <label class="form-label" for="v-costo-mantenimiento">Costo Mant. / Km ($ USD) *</label>
+            <input type="number" step="0.01" id="v-costo-mantenimiento" class="form-control" value="0.18">
+          </div>
+        </div>
+      </div>
+
+      <!-- Campos específicos de Furgoneta Eléctrica -->
+      <div id="seccion-electrica" class="tipo-fields-section" style="display: none;">
+        <h4 class="section-title">⚡ Parámetros Eléctricos y Batería</h4>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label class="form-label" for="v-capacidad-bateria">Capacidad Batería (kWh) *</label>
+            <input type="number" step="0.1" id="v-capacidad-bateria" class="form-control" placeholder="68.0">
+          </div>
+          <div class="form-group col-md-4">
+            <label class="form-label" for="v-consumo-kwh">Consumo (kWh / 100 Km) *</label>
+            <input type="number" step="0.1" id="v-consumo-kwh" class="form-control" placeholder="21.0">
+          </div>
+          <div class="form-group col-md-4">
+            <label class="form-label" for="v-porcentaje-bateria">Nivel Batería Actual (0 - 100%) *</label>
+            <input type="number" id="v-porcentaje-bateria" class="form-control" value="100" min="0" max="100">
+            <small class="form-text">Debe estar estrictamente entre 0% y 100%</small>
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <label class="form-label" for="v-costo-kwh">Costo por kWh ($ USD)</label>
+          <input type="number" step="0.01" id="v-costo-kwh" class="form-control" value="0.12">
+        </div>
+      </div>
+
+      <!-- Mensaje de error/éxito -->
+      <div id="vehiculo-form-alert" class="alert-box" style="display: none;"></div>
+
+      <div class="form-actions">
+        <button type="button" id="btn-cancelar-vehiculo" class="btn btn-secondary">
+          Cancelar
+        </button>
+        <button type="submit" id="btn-guardar-vehiculo" class="btn btn-primary">
+          💾 Guardar Vehículo
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

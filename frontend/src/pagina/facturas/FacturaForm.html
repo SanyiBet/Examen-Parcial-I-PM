@@ -1,0 +1,84 @@
+<div class="factura-form-page">
+  <div class="form-card">
+    <div class="form-header">
+      <h2 class="form-title">Emitir Nueva Factura Simulada (Req-04)</h2>
+      <p class="form-subtitle">Facturación atómica exclusiva para servicios de transporte completados</p>
+    </div>
+
+    <form id="factura-form" novalidate>
+      <div class="form-row">
+        <div class="form-group col-md-8">
+          <label class="form-label" for="f-cliente">Seleccionar Cliente a Facturar *</label>
+          <select id="f-cliente" class="form-select" required>
+            <option value="">Seleccione un cliente...</option>
+          </select>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label class="form-label" for="f-impuesto">Tasa de Impuesto IVA (%)</label>
+          <input type="number" id="f-impuesto" class="form-control" value="15" min="0" max="30">
+        </div>
+      </div>
+
+      <!-- Servicios Completados Disponibles para Facturar -->
+      <div class="servicios-disponibles-section">
+        <div class="section-header-row">
+          <h4 class="section-title">Servicios Completados Pendientes de Facturación:</h4>
+          <span id="f-conteo-servicios-mes" class="badge badge-info">0 servicios en el mes</span>
+        </div>
+
+        <div id="f-servicios-container">
+          <p class="text-muted text-center py-3">Seleccione un cliente para consultar sus servicios completados.</p>
+        </div>
+      </div>
+
+      <!-- Resumen y Reglas Académicas de Facturación -->
+      <div class="resumen-factura-box">
+        <h4 class="section-title">Desglose de Liquidación:</h4>
+        <div class="tarifa-breakdown">
+          <div class="tarifa-row">
+            <span>Subtotal Servicios Seleccionados:</span>
+            <strong id="f-calc-subtotal">$0.00</strong>
+          </div>
+          <div class="tarifa-row">
+            <span>Recargos (+300km / Domingo):</span>
+            <strong id="f-calc-recargos">$0.00</strong>
+          </div>
+          <div class="tarifa-row text-success">
+            <span id="f-label-descuento">Descuento Cliente (0%):</span>
+            <strong id="f-calc-descuento">-$0.00</strong>
+          </div>
+          <div class="tarifa-row">
+            <span>Impuesto IVA (15%):</span>
+            <strong id="f-calc-impuesto">+$0.00</strong>
+          </div>
+          <div class="tarifa-row total-row">
+            <span>TOTAL LIQUIDADO:</span>
+            <strong id="f-calc-total" class="text-primary">$0.00</strong>
+          </div>
+        </div>
+
+        <div class="reglas-info-box mt-3">
+          <strong>Reglas Académicas Aplicadas:</strong>
+          <ul>
+            <li>3 a 5 servicios completados en el mes: <strong>5% de descuento</strong>.</li>
+            <li>6 o más servicios completados en el mes: <strong>10% de descuento</strong>.</li>
+            <li>Recargo de 6% para viajes > 300 km y 12% para viajes en domingo.</li>
+            <li>Operación atómica en backend: ante error no existe factura parcial.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="factura-form-alert" class="alert-box" style="display: none;"></div>
+
+      <div class="form-actions">
+        <button type="button" id="btn-cancelar-factura" class="btn btn-secondary">
+          Cancelar
+        </button>
+        <button type="submit" id="btn-generar-factura" class="btn btn-primary" disabled>
+          🧾 Generar Factura Atómica
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

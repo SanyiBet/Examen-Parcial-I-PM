@@ -1,0 +1,127 @@
+<div class="dashboard-page">
+  <div class="dashboard-header">
+    <div>
+      <h1 class="dashboard-title">TRANSLOGIC | Dashboard de Rentabilidad</h1>
+      <p class="dashboard-subtitle">Vista referencial con datos persistidos y analítica en tiempo real</p>
+    </div>
+    <div class="dashboard-filters">
+      <select id="dash-filtro-tipo" class="form-select select-sm">
+        <option value="">Todos los tipos</option>
+        <option value="CamionCarga">Camiones de Carga</option>
+        <option value="FurgonetaElectrica">Furgonetas Eléctricas</option>
+      </select>
+      <select id="dash-filtro-mes" class="form-select select-sm">
+        <option value="">Todos los meses</option>
+        <option value="1">Enero</option>
+        <option value="2">Febrero</option>
+        <option value="3">Marzo</option>
+        <option value="4">Abril</option>
+        <option value="5">Mayo</option>
+        <option value="6">Junio</option>
+        <option value="7">Julio</option>
+        <option value="8">Agosto</option>
+        <option value="9">Septiembre</option>
+        <option value="10" selected>Octubre</option>
+        <option value="11">Noviembre</option>
+        <option value="12">Diciembre</option>
+      </select>
+      <button id="btn-refresh-dash" class="btn btn-secondary btn-sm">
+        🔄 Actualizar
+      </button>
+    </div>
+  </div>
+
+  <!-- Tarjetas Estadísticas Superiores estilo ECO-MOVE -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-card-label">Ingresos totales</span>
+        <div class="stat-card-icon icon-blue">💰</div>
+      </div>
+      <div id="stat-ingresos" class="stat-card-value">$0.00</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-card-label">Servicios completados</span>
+        <div class="stat-card-icon icon-purple">📦</div>
+      </div>
+      <div id="stat-servicios" class="stat-card-value">0</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-card-label">Vehículos disponibles</span>
+        <div class="stat-card-icon icon-green">🚚</div>
+      </div>
+      <div id="stat-disponibles" class="stat-card-value">0</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-card-label">Servicios en ejecución / mora</span>
+        <div class="stat-card-icon icon-amber">⏱️</div>
+      </div>
+      <div id="stat-activos" class="stat-card-value">0</div>
+    </div>
+  </div>
+
+  <!-- Indicadores Financieros de Rentabilidad (Req-08) -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-title">Costos Operativos</div>
+      <div id="kpi-costos" class="kpi-value text-muted">$0.00</div>
+      <div class="kpi-desc">Combustible, mantenimiento y energía</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Utilidad Operativa</div>
+      <div id="kpi-utilidad" class="kpi-value text-primary">$0.00</div>
+      <div class="kpi-desc">Ingresos − Costos operativos</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Margen de Rentabilidad</div>
+      <div id="kpi-margen" class="kpi-value text-success">0%</div>
+      <div class="kpi-desc">Utilidad / Ingresos × 100</div>
+    </div>
+  </div>
+
+  <!-- Gráficos Principales -->
+  <div class="charts-grid">
+    <!-- Gráfico de Barras: Ingresos por tipo de vehículo -->
+    <div class="chart-card">
+      <h3 class="chart-title">Ingresos por tipo de vehículo</h3>
+      <div class="chart-container">
+        <canvas id="chart-bar-ingresos"></canvas>
+      </div>
+    </div>
+
+    <!-- Gráfico Donut: Distribución de servicios -->
+    <div class="chart-card">
+      <h3 class="chart-title">Distribución de servicios</h3>
+      <div class="chart-container">
+        <canvas id="chart-donut-servicios"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de comparación mensual (Req-08) -->
+  <div class="card mt-4">
+    <h3 class="chart-title mb-3">Comparación Mensual de Rentabilidad</h3>
+    <div class="table-responsive">
+      <table class="table-custom">
+        <thead>
+          <tr>
+            <th>Mes</th>
+            <th>Ingresos Facturados</th>
+            <th>Costos Operativos</th>
+            <th>Utilidad Neta</th>
+            <th>Margen (%)</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-mensual-body">
+          <tr><td colspan="5" class="text-center py-4">Cargando datos...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

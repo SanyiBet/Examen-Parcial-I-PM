@@ -1,0 +1,57 @@
+<div class="facturas-list-page">
+  <div class="page-title-bar">
+    <div>
+      <h2 class="page-title">Facturación Simulada y Comprobantes</h2>
+      <p class="page-subtitle">Emisión atómica sobre servicios completados, cálculo de descuentos y PDF simulado</p>
+    </div>
+    <button id="btn-crear-factura" class="btn btn-primary">
+      <span>➕</span> Emitir Nueva Factura
+    </button>
+  </div>
+
+  <div class="search-filter-card">
+    <div class="search-box">
+      <input type="text" id="factura-search" class="form-control" placeholder="Buscar por número de factura o cliente...">
+    </div>
+  </div>
+
+  <!-- Modal para ver Detalle de Factura -->
+  <div id="modal-detalle-factura" class="modal-backdrop" style="display: none;">
+    <div class="modal-card" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 id="modal-factura-title">Detalle de Comprobante Simulado</h3>
+        <button id="modal-factura-close" class="btn-close">&times;</button>
+      </div>
+      <div id="modal-factura-body" class="modal-body">
+        <!-- Renderizado dinámico -->
+      </div>
+      <div class="form-actions" style="padding: 16px 24px; background: #f8fafc; border-top: 1px solid #e2e8f0;">
+        <button id="btn-descargar-pdf-modal" class="btn btn-primary">
+          📄 Descargar Comprobante PDF (jsPDF)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de Facturas -->
+  <div class="table-responsive">
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th>N° Factura</th>
+          <th>Cliente</th>
+          <th>Fecha Emisión</th>
+          <th>Subtotal</th>
+          <th>Recargos</th>
+          <th>Descuento</th>
+          <th>IVA (15%)</th>
+          <th>Total Facturado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="facturas-table-body">
+        <tr><td colspan="9" class="text-center py-4">Cargando facturas...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>

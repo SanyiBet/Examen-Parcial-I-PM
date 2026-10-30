@@ -1,0 +1,59 @@
+<div class="vehiculos-list-page">
+  <div class="page-title-bar">
+    <div>
+      <h2 class="page-title">Gestión de Flota de Vehículos</h2>
+      <p class="page-subtitle">Listado, búsqueda por placa y evaluación de eficiencia operativa</p>
+    </div>
+    <button id="btn-crear-vehiculo" class="btn btn-primary">
+      <span>➕</span> Nuevo Vehículo
+    </button>
+  </div>
+
+  <!-- Barra de búsqueda y filtros -->
+  <div class="search-filter-card">
+    <div class="search-box">
+      <input type="text" id="vehiculo-search" class="form-control" placeholder="Buscar por placa, marca o modelo...">
+    </div>
+    <div class="filter-box">
+      <select id="vehiculo-tipo-filter" class="form-select">
+        <option value="">Todos los tipos</option>
+        <option value="CamionCarga">Camiones de Carga (Combustión)</option>
+        <option value="FurgonetaElectrica">Furgonetas Eléctricas</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Modal o panel de eficiencia -->
+  <div id="modal-eficiencia" class="modal-backdrop" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-eficiencia-title">Evaluación de Eficiencia</h3>
+        <button id="modal-eficiencia-close" class="btn-close">&times;</button>
+      </div>
+      <div id="modal-eficiencia-body" class="modal-body">
+        <!-- Renderizado dinámico -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de Vehículos -->
+  <div class="table-responsive">
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th>Placa</th>
+          <th>Tipo</th>
+          <th>Marca / Modelo</th>
+          <th>Capacidad</th>
+          <th>Kilometraje</th>
+          <th>Eficiencia / Batería</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="vehiculos-table-body">
+        <tr><td colspan="8" class="text-center py-4">Cargando flota de vehículos...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>

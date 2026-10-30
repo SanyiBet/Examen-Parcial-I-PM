@@ -1,0 +1,39 @@
+.facturas-list-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.factura-info-header {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.factura-totales-box {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.factura-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13.5px;
+  color: #475569;
+}
+
+.factura-gran-total {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}

@@ -1,0 +1,133 @@
+<div class="servicio-form-page">
+  <div class="form-card">
+    <div class="form-header">
+      <h2 class="form-title">Planificar Nuevo Servicio de Transporte</h2>
+      <p class="form-subtitle">Selección vehicular, validación de carga y simulación de tarifa en tiempo real</p>
+    </div>
+
+    <form id="servicio-form" novalidate>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label class="form-label" for="s-codigo">Código de Servicio Único *</label>
+          <input type="text" id="s-codigo" class="form-control" placeholder="Ej: SRV-2026-008" required>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label class="form-label" for="s-cliente">Cliente *</label>
+          <select id="s-cliente" class="form-select" required>
+            <option value="">Seleccione un cliente...</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label class="form-label" for="s-vehiculo">Vehículo Asignado *</label>
+          <select id="s-vehiculo" class="form-select" required>
+            <option value="">Seleccione un vehículo...</option>
+          </select>
+          <div id="vehiculo-info-badge" class="form-text"></div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label class="form-label" for="s-origen">Origen *</label>
+          <input type="text" id="s-origen" class="form-control" placeholder="Ej: Quito Terminal Sur" required>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label class="form-label" for="s-destino">Destino *</label>
+          <input type="text" id="s-destino" class="form-control" placeholder="Ej: Guayaquil Puerto" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label class="form-label" for="s-distancia">Distancia (Km) *</label>
+          <input type="number" id="s-distancia" class="form-control" placeholder="Ej: 250" min="1" required>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label class="form-label" for="s-peso">Peso de la Carga (Kg) *</label>
+          <input type="number" id="s-peso" class="form-control" placeholder="Ej: 12000" min="1" required>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label class="form-label" for="s-fecha">Fecha del Servicio *</label>
+          <input type="date" id="s-fecha" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label class="form-label" for="s-hora-inicio">Hora de Inicio Estimada *</label>
+          <input type="time" id="s-hora-inicio" class="form-control" value="08:00" required>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label class="form-label" for="s-hora-fin">Hora de Fin Estimada *</label>
+          <input type="time" id="s-hora-fin" class="form-control" value="12:00" required>
+        </div>
+      </div>
+
+      <!-- Recarga planificada para vehículos eléctricos -->
+      <div id="box-recarga-planificada" class="form-check-box" style="display: none;">
+        <label class="check-label">
+          <input type="checkbox" id="s-recarga-planificada">
+          <span>⚡ Recarga Planificada en Ruta (Permite despachar viajes que excedan la autonomía actual)</span>
+        </label>
+      </div>
+
+      <!-- Panel de Simulación de Tarifa (Req-02) -->
+      <div class="tarifa-simulada-box">
+        <div class="tarifa-header">
+          <span class="tarifa-label">Simulación de Tarifa (Req-02 / Servidor)</span>
+          <button type="button" id="btn-recalcular-tarifa" class="btn btn-sm btn-outline">
+            🔄 Recalcular Simulación
+          </button>
+        </div>
+
+        <div class="tarifa-breakdown">
+          <div class="tarifa-row">
+            <span>Costo Operativo Estimado:</span>
+            <strong id="sim-costo-operativo">$0.00</strong>
+          </div>
+          <div class="tarifa-row">
+            <span>Tarifa Base (Margen Regla de Negocio):</span>
+            <strong id="sim-tarifa-base">$0.00</strong>
+          </div>
+          <div class="tarifa-row">
+            <span id="sim-label-recargo-carga">Recargo Capacidad / Autonomía (>80%):</span>
+            <strong id="sim-recargo-carga">$0.00</strong>
+          </div>
+          <div class="tarifa-row">
+            <span>Recargo Distancia Larga (>300 km: 6%):</span>
+            <strong id="sim-recargo-distancia">$0.00</strong>
+          </div>
+          <div class="tarifa-row">
+            <span>Recargo por Servicio en Domingo (12%):</span>
+            <strong id="sim-recargo-domingo">$0.00</strong>
+          </div>
+          <div class="tarifa-row total-row">
+            <span>TOTAL ESTIMADO:</span>
+            <strong id="sim-tarifa-total" class="text-primary">$0.00</strong>
+          </div>
+        </div>
+
+        <div id="sim-alert-message" class="sim-alert" style="display: none;"></div>
+      </div>
+
+      <div id="servicio-form-alert" class="alert-box" style="display: none;"></div>
+
+      <div class="form-actions">
+        <button type="button" id="btn-cancelar-servicio" class="btn btn-secondary">
+          Cancelar
+        </button>
+        <button type="submit" id="btn-guardar-servicio" class="btn btn-primary">
+          🚀 Confirmar y Programar Servicio
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

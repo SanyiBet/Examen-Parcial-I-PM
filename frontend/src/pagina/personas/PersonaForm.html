@@ -1,0 +1,74 @@
+<div class="persona-form-page">
+  <div class="form-card">
+    <div class="form-header">
+      <h2 id="form-persona-title" class="form-title">Registrar Nueva Persona</h2>
+      <p class="form-subtitle">Formulario de captura para datos demográficos y validaciones de edad</p>
+    </div>
+
+    <form id="persona-form" novalidate>
+      <input type="hidden" id="p-index" value="-1">
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label class="form-label" for="p-cedula">Cédula de Identidad *</label>
+          <input type="text" id="p-cedula" class="form-control" placeholder="Ej: 0912345678" required>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label class="form-label" for="p-fecha-nac">Fecha de Nacimiento *</label>
+          <input type="date" id="p-fecha-nac" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label class="form-label" for="p-nombres">Nombres Completos *</label>
+          <input type="text" id="p-nombres" class="form-control" placeholder="Ej: Carlos" required>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label class="form-label" for="p-apellidos">Apellidos Completos *</label>
+          <input type="text" id="p-apellidos" class="form-control" placeholder="Ej: Mendoza" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label class="form-label" for="p-sexo">Sexo *</label>
+          <select id="p-sexo" class="form-select" required>
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+            <option value="Binario">Binario</option>
+          </select>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label class="form-label" for="p-estado-civil">Estado Civil *</label>
+          <select id="p-estado-civil" class="form-select" required>
+            <option value="Soltero">Soltero</option>
+            <option value="Casado">Casado</option>
+            <option value="Divorciado">Divorciado</option>
+            <option value="Viudo">Viudo</option>
+            <option value="Union hechos">Union hechos</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="p-direccion">Dirección Domiciliaria *</label>
+        <input type="text" id="p-direccion" class="form-control" placeholder="Ej: Machala, Av. 25 de Junio" required>
+      </div>
+
+      <div id="persona-form-alert" class="alert-box" style="display: none;"></div>
+
+      <div class="form-actions">
+        <button type="button" id="btn-cancelar-persona" class="btn btn-secondary">
+          Cancelar
+        </button>
+        <button type="submit" id="btn-guardar-persona" class="btn btn-primary">
+          💾 Guardar Persona
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

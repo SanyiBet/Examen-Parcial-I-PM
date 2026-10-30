@@ -1,0 +1,54 @@
+<div class="reportes-page">
+  <div class="page-title-bar">
+    <div>
+      <h2 class="page-title">Consultas Analíticas Avanzadas (Req-07)</h2>
+      <p class="page-subtitle">8 Consultas SQL/ORM ejecutadas directamente en el servidor de base de datos</p>
+    </div>
+  </div>
+
+  <!-- Pestañas de las 8 consultas -->
+  <div class="reportes-tabs">
+    <button class="tab-btn active" data-tab="1">21. Costo > Promedio</button>
+    <button class="tab-btn" data-tab="2">22. % Participación</button>
+    <button class="tab-btn" data-tab="3">23. Clientes Frecuentes</button>
+    <button class="tab-btn" data-tab="4">24. Sin Servicios</button>
+    <button class="tab-btn" data-tab="5">25. Top 5 Rentabilidad</button>
+    <button class="tab-btn" data-tab="6">26. Facturación Mensual</button>
+    <button class="tab-btn" data-tab="7">27. Eficiencia < Promedio</button>
+    <button class="tab-btn" data-tab="8">28. Disminución Facturación > 20%</button>
+  </div>
+
+  <!-- Contenedor del resultado de la consulta activa -->
+  <div class="card mt-3">
+    <div class="consulta-header">
+      <h3 id="consulta-title" class="consulta-title">Cargando consulta...</h3>
+      <p id="consulta-desc" class="consulta-desc"></p>
+    </div>
+
+    <!-- Filtro de fechas opcional para consulta 4 -->
+    <div id="box-filtro-c4" class="search-filter-card mb-3" style="display: none;">
+      <div class="filter-box">
+        <label class="form-label">Desde:</label>
+        <input type="date" id="c4-desde" class="form-control">
+      </div>
+      <div class="filter-box">
+        <label class="form-label">Hasta:</label>
+        <input type="date" id="c4-hasta" class="form-control">
+      </div>
+      <div style="display: flex; align-items: flex-end;">
+        <button id="c4-btn-filtrar" class="btn btn-secondary">Filtrar Rango</button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table-custom" id="reportes-table">
+        <thead id="reportes-thead">
+          <!-- Renderizado dinámico -->
+        </thead>
+        <tbody id="reportes-tbody">
+          <tr><td class="text-center py-4">Cargando datos desde la base de datos...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="personas-list-page">
+  <div class="page-title-bar">
+    <div>
+      <h2 class="page-title">Gestión de Personal y Conductores (Entidad Persona)</h2>
+      <p class="page-subtitle">Demostración del controlador de negocio ControllersPersona y métodos de cálculo de edad</p>
+    </div>
+    <button id="btn-crear-persona" class="btn btn-primary">
+      <span>➕</span> Registrar Persona
+    </button>
+  </div>
+
+  <div class="search-filter-card">
+    <div class="search-box">
+      <input type="text" id="persona-search" class="form-control" placeholder="Buscar por cédula, nombres, apellidos o dirección...">
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th>Cédula</th>
+          <th>Nombres y Apellidos</th>
+          <th>Edad (Años)</th>
+          <th>Edad Detallada (Años y Meses)</th>
+          <th>Sexo</th>
+          <th>Estado Civil</th>
+          <th>Dirección</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="personas-table-body">
+        <!-- Renderizado dinámico -->
+      </tbody>
+    </table>
+  </div>
+</div>
