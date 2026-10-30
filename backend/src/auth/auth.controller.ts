@@ -1,9 +1,17 @@
 import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { AuthService } from './auth.service';
 
 export class LoginDto {
+  @ApiProperty({ example: 'admin@translogic.com' })
+  @IsNotEmpty({ message: 'El correo electrónico es requerido' })
+  @IsString()
   email: string;
+
+  @ApiProperty({ example: 'admin123' })
+  @IsNotEmpty({ message: 'La contraseña es requerida' })
+  @IsString()
   password: string;
 }
 
