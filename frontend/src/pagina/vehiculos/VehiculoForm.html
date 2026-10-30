@@ -59,12 +59,23 @@
             <span>🖼️ Fotografía / Link de Imagen del Vehículo (Opcional)</span>
           </label>
           <input type="url" id="v-imagen-url" class="form-control" placeholder="https://images.unsplash.com/... o enlace directo de imagen">
-          <div class="imagen-presets">
-            <span class="preset-label">Fotos de muestra:</span>
-            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80">🚚 Camión Pesado</button>
-            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=800&q=80">🚛 Tráiler Carga</button>
-            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80">⚡ Furgoneta E-Transit</button>
-            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80">📦 Van Eléctrica</button>
+          
+          <!-- Presets para Camión de Carga -->
+          <div id="presets-camion" class="imagen-presets">
+            <span class="preset-label">Fotos de Camiones de Carga:</span>
+            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80">🚚 Volvo FH</button>
+            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=800&q=80">🚛 Mercedes Actros</button>
+            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1586191582152-4752b57567fd?auto=format&fit=crop&w=800&q=80">📦 Hino 500</button>
+            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1501700493788-fa1a4fc9fe62?auto=format&fit=crop&w=800&q=80">🛣️ Freightliner Carga</button>
+          </div>
+
+          <!-- Presets para Furgoneta Eléctrica -->
+          <div id="presets-electrica" class="imagen-presets" style="display: none;">
+            <span class="preset-label">Fotos de Furgonetas Eléctricas:</span>
+            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80">⚡ Ford E-Transit</button>
+            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80">🔋 Renault Kangoo E-Tech</button>
+            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80">🌱 BYD T3 Eléctrica</button>
+            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80">🔌 Mercedes eVito</button>
           </div>
         </div>
         <div class="imagen-preview-container">

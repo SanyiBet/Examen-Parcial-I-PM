@@ -86,13 +86,19 @@ export class VehiculoForm {
   private toggleCamposTipo(container: HTMLElement, tipo: TipoVehiculo) {
     const secCamion = container.querySelector('#seccion-camion') as HTMLElement;
     const secElectrica = container.querySelector('#seccion-electrica') as HTMLElement;
+    const presetsCamion = container.querySelector('#presets-camion') as HTMLElement;
+    const presetsElectrica = container.querySelector('#presets-electrica') as HTMLElement;
 
     if (tipo === 'CamionCarga') {
-      secCamion.style.display = 'block';
-      secElectrica.style.display = 'none';
+      if (secCamion) secCamion.style.display = 'block';
+      if (secElectrica) secElectrica.style.display = 'none';
+      if (presetsCamion) presetsCamion.style.display = 'flex';
+      if (presetsElectrica) presetsElectrica.style.display = 'none';
     } else {
-      secCamion.style.display = 'none';
-      secElectrica.style.display = 'block';
+      if (secCamion) secCamion.style.display = 'none';
+      if (secElectrica) secElectrica.style.display = 'block';
+      if (presetsCamion) presetsCamion.style.display = 'none';
+      if (presetsElectrica) presetsElectrica.style.display = 'flex';
     }
   }
 
