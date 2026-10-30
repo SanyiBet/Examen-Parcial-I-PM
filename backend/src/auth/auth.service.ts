@@ -14,6 +14,9 @@ export class AuthService {
   ) {}
 
   async login(email: string, passwordPlain: string) {
+    if (!email || !passwordPlain) {
+      throw new BadRequestException('El correo y la contraseña son requeridos');
+    }
     const user = await this.usuarioRepo.findOne({ where: { email } });
     if (!user || !user.activo) {
       throw new UnauthorizedException('Credenciales inválidas o cuenta desactivada');
