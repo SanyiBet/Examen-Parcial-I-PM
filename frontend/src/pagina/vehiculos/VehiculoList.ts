@@ -1,6 +1,7 @@
 import template from './VehiculoList.html?raw';
 import './VehiculoList.css';
 import { ListaVehiculos } from '../../Controlador/ControllersVehiculo';
+import { AuthState } from '../../Controlador/ControllersAuth';
 import { IVehiculo } from '../../Entidades/Vehiculo';
 
 export class VehiculoList {
@@ -36,6 +37,20 @@ export class VehiculoList {
     const btnPrev = container.querySelector('#vehiculos-btn-prev');
     const btnNext = container.querySelector('#vehiculos-btn-next');
     const selectPageSize = container.querySelector('#vehiculos-page-size') as HTMLSelectElement;
+
+    const esAdmin = AuthState.esAdmin();
+    if (!esAdmin && btnCrear) {
+      (btnCrear as HTMLElement).style.display = 'none';
+      const titleBar = container.querySelector('.page-title-bar');
+      if (titleBar && !titleBar.querySelector('.role-scope-badge')) {
+        const badge = document.createElement('span');
+        badge.className = 'badge badge-secondary role-scope-badge';
+        badge.style.padding = '6px 12px';
+        badge.style.fontSize = '12px';
+        badge.textContent = '👁️ Modo Monitoreo Operativo (Gestión para Administrador)';
+        titleBar.appendChild(badge);
+      }
+    }
 
     btnCrear?.addEventListener('click', () => {
       if (this.onCrearCallback) this.onCrearCallback();
@@ -277,9 +292,11 @@ export class VehiculoList {
             <button class="btn btn-sm btn-outline btn-eficiencia" data-id="${v.id}">
               📊 Eficiencia
             </button>
-            <button class="btn btn-sm btn-secondary btn-editar" data-id="${v.id}">
-              ✏️ Editar
-            </button>
+            ${AuthState.esAdmin() ? `
+              <button class="btn btn-sm btn-secondary btn-editar" data-id="${v.id}">
+                ✏️ Editar
+              </button>
+            ` : ''}
           </div>
         </div>
       `;
@@ -331,7 +348,7 @@ export class VehiculoList {
           <td>
             <div class="actions-cell">
               <button class="btn btn-sm btn-outline btn-eficiencia" data-id="${v.id}">📊 Eficiencia</button>
-              <button class="btn btn-sm btn-secondary btn-editar" data-id="${v.id}">✏️ Editar</button>
+              ${AuthState.esAdmin() ? `<button class="btn btn-sm btn-secondary btn-editar" data-id="${v.id}">✏️ Editar</button>` : ''}
             </div>
           </td>
         </tr>

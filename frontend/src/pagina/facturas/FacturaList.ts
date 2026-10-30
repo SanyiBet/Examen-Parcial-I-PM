@@ -1,6 +1,7 @@
 import template from './FacturaList.html?raw';
 import './FacturaList.css';
 import { ListaFacturas } from '../../Controlador/ControllersFactura';
+import { AuthState } from '../../Controlador/ControllersAuth';
 import { IFactura } from '../../Entidades/Factura';
 
 export class FacturaList {
@@ -25,6 +26,20 @@ export class FacturaList {
   private bindEvents(container: HTMLElement) {
     const btnCrear = container.querySelector('#btn-crear-factura');
     const inputSearch = container.querySelector('#factura-search') as HTMLInputElement;
+
+    const esAdmin = AuthState.esAdmin();
+    if (!esAdmin && btnCrear) {
+      (btnCrear as HTMLElement).style.display = 'none';
+      const titleBar = container.querySelector('.page-title-bar');
+      if (titleBar && !titleBar.querySelector('.role-scope-badge')) {
+        const badge = document.createElement('span');
+        badge.className = 'badge badge-secondary role-scope-badge';
+        badge.style.padding = '6px 12px';
+        badge.style.fontSize = '12px';
+        badge.textContent = '🔒 Modo Consulta (Emisión de facturas reservada para Administrador)';
+        titleBar.appendChild(badge);
+      }
+    }
 
     const btnPrev = container.querySelector('#facturas-btn-prev');
     const btnNext = container.querySelector('#facturas-btn-next');

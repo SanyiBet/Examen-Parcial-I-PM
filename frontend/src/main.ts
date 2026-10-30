@@ -191,11 +191,13 @@ class App {
             <button class="nav-item ${this.currentView.startsWith('servicios') ? 'active' : ''}" data-nav="servicios-list">
               <span class="nav-icon">📦</span> Servicios y Rutas
             </button>
-            <button class="nav-item ${this.currentView.startsWith('facturas') ? 'active' : ''}" data-nav="facturas-list">
-              <span class="nav-icon">🧾</span> Facturación Simulada
+            <button class="nav-item ${this.currentView.startsWith('facturas') ? 'active' : ''}" data-nav="facturas-list" style="display: flex; align-items: center;">
+              <span class="nav-icon">🧾</span> Facturación
+              ${!esAdmin ? '<span class="badge" style="font-size: 9px; padding: 1px 5px; background: #e2e8f0; color: #475569; margin-left: auto;">Consulta</span>' : ''}
             </button>
-            <button class="nav-item ${this.currentView === 'reportes' ? 'active' : ''}" data-nav="reportes">
-              <span class="nav-icon">📈</span> Consultas Avanzadas (8)
+            <button class="nav-item ${this.currentView === 'reportes' ? 'active' : ''}" data-nav="reportes" style="display: flex; align-items: center;">
+              <span class="nav-icon">${esAdmin ? '📈' : '🔒'}</span> Consultas Avanzadas (8)
+              ${!esAdmin ? '<span class="badge" style="font-size: 9px; padding: 1px 5px; background: #fee2e2; color: #b91c1c; margin-left: auto;">Admin</span>' : ''}
             </button>
             <button class="nav-item ${this.currentView === 'clientes-list' ? 'active' : ''}" data-nav="clientes-list">
               <span class="nav-icon">🏢</span> Clientes / Socios
@@ -212,7 +214,7 @@ class App {
                 <div class="user-text-name">${user?.nombre || 'Usuario'}</div>
                 <div class="user-text-role">
                   <span class="badge ${esAdmin ? 'badge-info' : 'badge-secondary'}" style="font-size: 10px; padding: 2px 6px;">
-                    ${user?.rol || 'Operador'}
+                    ${esAdmin ? '👑 Administrador' : '👷 Operador'}
                   </span>
                 </div>
               </div>
@@ -293,6 +295,8 @@ class App {
     const container = document.getElementById('subview-container');
     if (!container) return;
 
+    const esAdmin = AuthState.esAdmin();
+
     switch (this.currentView) {
       case 'dashboard':
         await this.dashboardPage.render(container);
@@ -301,7 +305,22 @@ class App {
         await this.vehiculoListPage.render(container);
         break;
       case 'vehiculos-form':
-        this.vehiculoFormPage.render(container);
+        if (!esAdmin) {
+          container.innerHTML = `
+            <div style="padding: 40px 20px; text-align: center; max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+              <div style="font-size: 48px; margin-bottom: 12px;">🛡️</div>
+              <h3 style="font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 8px;">Configuración de Flota Restringida</h3>
+              <p style="font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 16px;">
+                La incorporación y edición de vehículos en la flota está reservada al rol de <strong>Administrador</strong> (REQ-01 / REQ-06).
+              </p>
+              <div style="background: #f8fafc; border-radius: 8px; padding: 10px; font-size: 12px; color: #475569;">
+                Como Operador tienes autorización para consultar disponibilidad y telemetría en la lista de vehículos.
+              </div>
+            </div>
+          `;
+        } else {
+          this.vehiculoFormPage.render(container);
+        }
         break;
       case 'servicios-list':
         await this.servicioListPage.render(container);
@@ -313,10 +332,41 @@ class App {
         await this.facturaListPage.render(container);
         break;
       case 'facturas-form':
-        await this.facturaFormPage.render(container);
+        if (!esAdmin) {
+          container.innerHTML = `
+            <div style="padding: 40px 20px; text-align: center; max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+              <div style="font-size: 48px; margin-bottom: 12px;">🧾</div>
+              <h3 style="font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 8px;">Emisión de Facturas Restringida</h3>
+              <p style="font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 16px;">
+                La liquidación y emisión atómica de facturas (REQ-04) está reservada exclusivamente para el rol contable de <strong>Administrador</strong>.
+              </p>
+              <div style="background: #f8fafc; border-radius: 8px; padding: 10px; font-size: 12px; color: #475569;">
+                Como Operador puedes consultar y descargar en PDF los comprobantes ya emitidos.
+              </div>
+            </div>
+          `;
+        } else {
+          await this.facturaFormPage.render(container);
+        }
         break;
       case 'reportes':
-        await this.reportesPage.render(container);
+        if (!esAdmin) {
+          container.innerHTML = `
+            <div style="padding: 50px 20px; text-align: center; max-width: 650px; margin: 40px auto; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+              <div style="font-size: 52px; margin-bottom: 12px;">🔒</div>
+              <h3 style="font-size: 22px; font-weight: 700; color: #1e293b; margin-bottom: 8px;">Módulo Restringido para Operador</h3>
+              <p style="font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 24px;">
+                Las <strong>Consultas Avanzadas y Reportes Gerenciales (REQ-05 / REQ-06)</strong> incluyen métricas financieras de rentabilidad consolidada, márgenes por vehículo y auditoría contable. Este módulo está reservado exclusivamente para el perfil directivo de <strong>Administrador</strong>.
+              </p>
+              <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 14px 20px; font-size: 13px; color: #334155; display: inline-block;">
+                Tu perfil actual: <span class="badge badge-secondary" style="font-weight: 700; font-size: 11px;">👷 Operador Logístico</span><br>
+                <span style="font-size: 12px; color: #64748b;">(Tus permisos autorizados: Registro y planificación de servicios, despacho en ruta y monitoreo de flota).</span>
+              </div>
+            </div>
+          `;
+        } else {
+          await this.reportesPage.render(container);
+        }
         break;
       case 'clientes-list':
         await this.clienteListPage.render(container);
