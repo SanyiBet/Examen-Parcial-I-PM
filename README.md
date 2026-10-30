@@ -114,11 +114,11 @@ Examen-Parcial-I-PM/
 Al arrancar el servidor backend por primera vez, se inicializan automáticamente los siguientes datos:
 - **Administrador General:**
   - Correo: `admin@translogic.com`
-  - Contraseña: `admin123`
+  - Contraseña: `Admin123*`
   - Rol: `Administrador` (Acceso completo a todos los módulos y reportes)
 - **Operador Logístico:**
   - Correo: `operador@translogic.com`
-  - Contraseña: `operador123`
+  - Contraseña: `Operador123*`
   - Rol: `Operador` (Gestión operativa y despachos)
 - En la pantalla de inicio de sesión existen botones de **autocompletado rápido** para comodidad de la evaluación.
 
