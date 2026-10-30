@@ -108,4 +108,27 @@
       </tbody>
     </table>
   </div>
+
+  <!-- Barra de Paginación de Vehículos -->
+  <div class="pagination-bar" id="vehiculos-pagination-bar">
+    <div class="pagination-info">
+      Mostrando <span id="vehiculos-page-start">1</span> - <span id="vehiculos-page-end">6</span> de <strong id="vehiculos-total-count">0</strong> vehículos
+    </div>
+    <div class="pagination-controls">
+      <div class="page-size-selector">
+        <label for="vehiculos-page-size">Por página:</label>
+        <select id="vehiculos-page-size" class="form-select form-select-sm">
+          <option value="6" selected>6</option>
+          <option value="12">12</option>
+          <option value="24">24</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      <div class="pagination-buttons">
+        <button class="btn btn-sm btn-secondary btn-page-prev" id="vehiculos-btn-prev" disabled>◀ Anterior</button>
+        <span class="page-current" id="vehiculos-page-current">Pág. 1 de 1</span>
+        <button class="btn btn-sm btn-secondary btn-page-next" id="vehiculos-btn-next" disabled>Siguiente ▶</button>
+      </div>
+    </div>
+  </div>
 </div>

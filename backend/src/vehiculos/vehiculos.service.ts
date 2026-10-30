@@ -10,7 +10,7 @@ export class VehiculosService {
     private readonly vehiculoRepo: Repository<VehiculoEntity>,
   ) {}
 
-  async findAll(tipo?: TipoVehiculo, placa?: string) {
+  async findAll(tipo?: TipoVehiculo, placa?: string, page?: number, limit?: number) {
     const query = this.vehiculoRepo.createQueryBuilder('v');
     if (tipo) {
       query.andWhere('v.tipo = :tipo', { tipo });
@@ -18,7 +18,17 @@ export class VehiculosService {
     if (placa) {
       query.andWhere('LOWER(v.placa) LIKE LOWER(:placa)', { placa: `%${placa}%` });
     }
-    return query.orderBy('v.placa', 'ASC').getMany();
+    query.orderBy('v.placa', 'ASC');
+
+    if (page && limit) {
+      const pageNum = Number(page);
+      const limitNum = Number(limit);
+      query.skip((pageNum - 1) * limitNum).take(limitNum);
+      const [items, total] = await query.getManyAndCount();
+      return { items, total, page: pageNum, limit: limitNum };
+    }
+
+    return query.getMany();
   }
 
   async findOne(id: string) {

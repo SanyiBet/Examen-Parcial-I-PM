@@ -18,7 +18,19 @@ export class FacturasService {
     private readonly dataSource: DataSource,
   ) {}
 
-  async findAll() {
+  async findAll(page?: number, limit?: number) {
+    if (page && limit) {
+      const pageNum = Number(page);
+      const limitNum = Number(limit);
+      const [items, total] = await this.facturaRepo.findAndCount({
+        relations: { cliente: true, detalles: { servicio: true } },
+        order: { createdAt: 'DESC' },
+        skip: (pageNum - 1) * limitNum,
+        take: limitNum,
+      });
+      return { items, total, page: pageNum, limit: limitNum };
+    }
+
     return this.facturaRepo.find({
       relations: { cliente: true, detalles: { servicio: true } },
       order: { createdAt: 'DESC' },

@@ -84,4 +84,27 @@
       </tbody>
     </table>
   </div>
+
+  <!-- Barra de Paginación de Servicios -->
+  <div class="pagination-bar" id="servicios-pagination-bar">
+    <div class="pagination-info">
+      Mostrando <span id="servicios-page-start">1</span> - <span id="servicios-page-end">10</span> de <strong id="servicios-total-count">0</strong> servicios
+    </div>
+    <div class="pagination-controls">
+      <div class="page-size-selector">
+        <label for="servicios-page-size">Por página:</label>
+        <select id="servicios-page-size" class="form-select form-select-sm">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      <div class="pagination-buttons">
+        <button class="btn btn-sm btn-secondary btn-page-prev" id="servicios-btn-prev" disabled>◀ Anterior</button>
+        <span class="page-current" id="servicios-page-current">Pág. 1 de 1</span>
+        <button class="btn btn-sm btn-secondary btn-page-next" id="servicios-btn-next" disabled>Siguiente ▶</button>
+      </div>
+    </div>
+  </div>
 </div>

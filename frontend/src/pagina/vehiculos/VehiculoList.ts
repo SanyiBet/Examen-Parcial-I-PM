@@ -8,6 +8,10 @@ export class VehiculoList {
   private onEditarCallback?: (vehiculo: IVehiculo) => void;
   private currentView: 'cards' | 'table' = 'cards';
 
+  private currentPage = 1;
+  private pageSize = 6;
+  private listaFiltrada: IVehiculo[] = [];
+
   constructor(handlers?: { onCrear?: () => void; onEditar?: (v: IVehiculo) => void }) {
     this.onCrearCallback = handlers?.onCrear;
     this.onEditarCallback = handlers?.onEditar;
@@ -28,6 +32,10 @@ export class VehiculoList {
 
     const btnViewCards = container.querySelector('#btn-view-cards');
     const btnViewTable = container.querySelector('#btn-view-table');
+
+    const btnPrev = container.querySelector('#vehiculos-btn-prev');
+    const btnNext = container.querySelector('#vehiculos-btn-next');
+    const selectPageSize = container.querySelector('#vehiculos-page-size') as HTMLSelectElement;
 
     btnCrear?.addEventListener('click', () => {
       if (this.onCrearCallback) this.onCrearCallback();
@@ -50,6 +58,28 @@ export class VehiculoList {
       (container.querySelector('#vehiculos-table-view') as HTMLElement).style.display = 'block';
     });
 
+    // Paginación eventos
+    btnPrev?.addEventListener('click', () => {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.renderPaginaActual(container);
+      }
+    });
+
+    btnNext?.addEventListener('click', () => {
+      const totalPages = Math.ceil(this.listaFiltrada.length / this.pageSize) || 1;
+      if (this.currentPage < totalPages) {
+        this.currentPage++;
+        this.renderPaginaActual(container);
+      }
+    });
+
+    selectPageSize?.addEventListener('change', () => {
+      this.pageSize = Number(selectPageSize.value) || 6;
+      this.currentPage = 1;
+      this.renderPaginaActual(container);
+    });
+
     inputSearch?.addEventListener('input', () => this.filtrar(container));
     filterTipo?.addEventListener('change', () => this.filtrar(container));
     filterEstado?.addEventListener('change', () => this.filtrar(container));
@@ -65,7 +95,9 @@ export class VehiculoList {
   private async cargarVehiculos(container: HTMLElement) {
     await ListaVehiculos.CargarVehiculos();
     this.actualizarMetricas(container, ListaVehiculos.Lista);
-    this.renderTodo(container, ListaVehiculos.Lista);
+    this.listaFiltrada = [...ListaVehiculos.Lista];
+    this.currentPage = 1;
+    this.renderPaginaActual(container);
   }
 
   private actualizarMetricas(container: HTMLElement, lista: IVehiculo[]) {
@@ -102,12 +134,43 @@ export class VehiculoList {
       filtrados = filtrados.filter(v => v.estado === estado);
     }
 
-    this.renderTodo(container, filtrados);
+    this.listaFiltrada = filtrados;
+    this.currentPage = 1;
+    this.renderPaginaActual(container);
   }
 
-  private renderTodo(container: HTMLElement, lista: IVehiculo[]) {
-    this.renderCards(container, lista);
-    this.renderTabla(container, lista);
+  private renderPaginaActual(container: HTMLElement) {
+    const total = this.listaFiltrada.length;
+    const totalPages = Math.ceil(total / this.pageSize) || 1;
+
+    if (this.currentPage > totalPages) {
+      this.currentPage = totalPages;
+    }
+    if (this.currentPage < 1) {
+      this.currentPage = 1;
+    }
+
+    const startIdx = total === 0 ? 0 : (this.currentPage - 1) * this.pageSize;
+    const endIdx = Math.min(startIdx + this.pageSize, total);
+    const pagedItems = this.listaFiltrada.slice(startIdx, endIdx);
+
+    // Actualizar barra de paginación
+    const pageStartEl = container.querySelector('#vehiculos-page-start');
+    const pageEndEl = container.querySelector('#vehiculos-page-end');
+    const totalCountEl = container.querySelector('#vehiculos-total-count');
+    const pageCurrentEl = container.querySelector('#vehiculos-page-current');
+    const btnPrev = container.querySelector('#vehiculos-btn-prev') as HTMLButtonElement;
+    const btnNext = container.querySelector('#vehiculos-btn-next') as HTMLButtonElement;
+
+    if (pageStartEl) pageStartEl.textContent = String(total === 0 ? 0 : startIdx + 1);
+    if (pageEndEl) pageEndEl.textContent = String(endIdx);
+    if (totalCountEl) totalCountEl.textContent = String(total);
+    if (pageCurrentEl) pageCurrentEl.textContent = `Pág. ${this.currentPage} de ${totalPages}`;
+    if (btnPrev) btnPrev.disabled = this.currentPage <= 1;
+    if (btnNext) btnNext.disabled = this.currentPage >= totalPages;
+
+    this.renderCards(container, pagedItems);
+    this.renderTabla(container, pagedItems);
     this.bindActionButtons(container);
   }
 

@@ -1,5 +1,5 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { ClientesService } from './clientes.service';
 import { ClienteEntity } from '../entities/cliente.entity';
 
@@ -9,9 +9,11 @@ export class ClientesController {
   constructor(private readonly clientesService: ClientesService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Listar todos los clientes' })
-  async findAll() {
-    return this.clientesService.findAll();
+  @ApiOperation({ summary: 'Listar clientes con paginación' })
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Número de página (opcional)' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Cantidad por página (opcional)' })
+  async findAll(@Query('page') page?: number, @Query('limit') limit?: number) {
+    return this.clientesService.findAll(page, limit);
   }
 
   @Get(':id')

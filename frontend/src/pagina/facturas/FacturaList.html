@@ -54,4 +54,27 @@
       </tbody>
     </table>
   </div>
+
+  <!-- Barra de Paginación de Facturas -->
+  <div class="pagination-bar" id="facturas-pagination-bar">
+    <div class="pagination-info">
+      Mostrando <span id="facturas-page-start">1</span> - <span id="facturas-page-end">10</span> de <strong id="facturas-total-count">0</strong> facturas
+    </div>
+    <div class="pagination-controls">
+      <div class="page-size-selector">
+        <label for="facturas-page-size">Por página:</label>
+        <select id="facturas-page-size" class="form-select form-select-sm">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      <div class="pagination-buttons">
+        <button class="btn btn-sm btn-secondary btn-page-prev" id="facturas-btn-prev" disabled>◀ Anterior</button>
+        <span class="page-current" id="facturas-page-current">Pág. 1 de 1</span>
+        <button class="btn btn-sm btn-secondary btn-page-next" id="facturas-btn-next" disabled>Siguiente ▶</button>
+      </div>
+    </div>
+  </div>
 </div>

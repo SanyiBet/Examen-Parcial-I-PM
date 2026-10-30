@@ -10,7 +10,17 @@ export class ClientesService {
     private readonly clienteRepo: Repository<ClienteEntity>,
   ) {}
 
-  async findAll() {
+  async findAll(page?: number, limit?: number) {
+    if (page && limit) {
+      const pageNum = Number(page);
+      const limitNum = Number(limit);
+      const [items, total] = await this.clienteRepo.findAndCount({
+        order: { nombre: 'ASC' },
+        skip: (pageNum - 1) * limitNum,
+        take: limitNum,
+      });
+      return { items, total, page: pageNum, limit: limitNum };
+    }
     return this.clienteRepo.find({ order: { nombre: 'ASC' } });
   }
 

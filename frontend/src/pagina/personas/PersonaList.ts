@@ -7,6 +7,10 @@ export class PersonaList {
   private onCrearCallback?: () => void;
   private onEditarCallback?: (p: Persona, index: number) => void;
 
+  private currentPage = 1;
+  private pageSize = 5;
+  private listaFiltrada: Persona[] = [];
+
   constructor(handlers?: { onCrear?: () => void; onEditar?: (p: Persona, index: number) => void }) {
     this.onCrearCallback = handlers?.onCrear;
     this.onEditarCallback = handlers?.onEditar;
@@ -16,22 +20,84 @@ export class PersonaList {
     container.innerHTML = template;
 
     this.bindEvents(container);
-    this.renderFilas(container, ListaPersonas.Lista);
+    this.listaFiltrada = [...ListaPersonas.Lista];
+    this.currentPage = 1;
+    this.renderPaginaActual(container);
   }
 
   private bindEvents(container: HTMLElement) {
     const btnCrear = container.querySelector('#btn-crear-persona');
     const inputSearch = container.querySelector('#persona-search') as HTMLInputElement;
 
+    const btnPrev = container.querySelector('#personas-btn-prev');
+    const btnNext = container.querySelector('#personas-btn-next');
+    const selectPageSize = container.querySelector('#personas-page-size') as HTMLSelectElement;
+
     btnCrear?.addEventListener('click', () => {
       if (this.onCrearCallback) this.onCrearCallback();
     });
 
+    // Paginación eventos
+    btnPrev?.addEventListener('click', () => {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.renderPaginaActual(container);
+      }
+    });
+
+    btnNext?.addEventListener('click', () => {
+      const totalPages = Math.ceil(this.listaFiltrada.length / this.pageSize) || 1;
+      if (this.currentPage < totalPages) {
+        this.currentPage++;
+        this.renderPaginaActual(container);
+      }
+    });
+
+    selectPageSize?.addEventListener('change', () => {
+      this.pageSize = Number(selectPageSize.value) || 5;
+      this.currentPage = 1;
+      this.renderPaginaActual(container);
+    });
+
     inputSearch?.addEventListener('input', () => {
       const q = inputSearch.value;
-      const filtradas = ListaPersonas.Buscar(q);
-      this.renderFilas(container, filtradas);
+      this.listaFiltrada = ListaPersonas.Buscar(q);
+      this.currentPage = 1;
+      this.renderPaginaActual(container);
     });
+  }
+
+  private renderPaginaActual(container: HTMLElement) {
+    const total = this.listaFiltrada.length;
+    const totalPages = Math.ceil(total / this.pageSize) || 1;
+
+    if (this.currentPage > totalPages) {
+      this.currentPage = totalPages;
+    }
+    if (this.currentPage < 1) {
+      this.currentPage = 1;
+    }
+
+    const startIdx = total === 0 ? 0 : (this.currentPage - 1) * this.pageSize;
+    const endIdx = Math.min(startIdx + this.pageSize, total);
+    const pagedItems = this.listaFiltrada.slice(startIdx, endIdx);
+
+    // Actualizar barra de paginación
+    const pageStartEl = container.querySelector('#personas-page-start');
+    const pageEndEl = container.querySelector('#personas-page-end');
+    const totalCountEl = container.querySelector('#personas-total-count');
+    const pageCurrentEl = container.querySelector('#personas-page-current');
+    const btnPrev = container.querySelector('#personas-btn-prev') as HTMLButtonElement;
+    const btnNext = container.querySelector('#personas-btn-next') as HTMLButtonElement;
+
+    if (pageStartEl) pageStartEl.textContent = String(total === 0 ? 0 : startIdx + 1);
+    if (pageEndEl) pageEndEl.textContent = String(endIdx);
+    if (totalCountEl) totalCountEl.textContent = String(total);
+    if (pageCurrentEl) pageCurrentEl.textContent = `Pág. ${this.currentPage} de ${totalPages}`;
+    if (btnPrev) btnPrev.disabled = this.currentPage <= 1;
+    if (btnNext) btnNext.disabled = this.currentPage >= totalPages;
+
+    this.renderFilas(container, pagedItems);
   }
 
   private renderFilas(container: HTMLElement, lista: Persona[]) {
@@ -79,7 +145,8 @@ export class PersonaList {
         if (confirm('¿Está seguro de eliminar este registro?')) {
           ListaPersonas.EliminarPersona(idx);
           console.table(ListaPersonas.Lista);
-          this.renderFilas(container, ListaPersonas.Lista);
+          this.listaFiltrada = [...ListaPersonas.Lista];
+          this.renderPaginaActual(container);
         }
       });
     });

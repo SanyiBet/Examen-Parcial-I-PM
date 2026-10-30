@@ -6,6 +6,9 @@ import { IServicioTransporte, EstadoServicio } from '../../Entidades/ServicioTra
 
 export class ServicioList {
   private onCrearCallback?: () => void;
+  private currentPage = 1;
+  private pageSize = 10;
+  private listaFiltrada: IServicioTransporte[] = [];
 
   constructor(handlers?: { onCrear?: () => void }) {
     this.onCrearCallback = handlers?.onCrear;
@@ -23,8 +26,34 @@ export class ServicioList {
     const inputSearch = container.querySelector('#servicio-search') as HTMLInputElement;
     const filterEstado = container.querySelector('#servicio-estado-filter') as HTMLSelectElement;
 
+    const btnPrev = container.querySelector('#servicios-btn-prev');
+    const btnNext = container.querySelector('#servicios-btn-next');
+    const selectPageSize = container.querySelector('#servicios-page-size') as HTMLSelectElement;
+
     btnCrear?.addEventListener('click', () => {
       if (this.onCrearCallback) this.onCrearCallback();
+    });
+
+    // Paginación eventos
+    btnPrev?.addEventListener('click', () => {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.renderPaginaActual(container);
+      }
+    });
+
+    btnNext?.addEventListener('click', () => {
+      const totalPages = Math.ceil(this.listaFiltrada.length / this.pageSize) || 1;
+      if (this.currentPage < totalPages) {
+        this.currentPage++;
+        this.renderPaginaActual(container);
+      }
+    });
+
+    selectPageSize?.addEventListener('change', () => {
+      this.pageSize = Number(selectPageSize.value) || 10;
+      this.currentPage = 1;
+      this.renderPaginaActual(container);
     });
 
     inputSearch?.addEventListener('input', () => this.filtrarTabla(container));
@@ -49,7 +78,9 @@ export class ServicioList {
 
   private async cargarTabla(container: HTMLElement) {
     await ListaServicios.CargarServicios();
-    this.renderFilas(container, ListaServicios.Lista);
+    this.listaFiltrada = [...ListaServicios.Lista];
+    this.currentPage = 1;
+    this.renderPaginaActual(container);
   }
 
   private filtrarTabla(container: HTMLElement) {
@@ -64,7 +95,42 @@ export class ServicioList {
       filtrados = filtrados.filter(s => s.estado === estado);
     }
 
-    this.renderFilas(container, filtrados);
+    this.listaFiltrada = filtrados;
+    this.currentPage = 1;
+    this.renderPaginaActual(container);
+  }
+
+  private renderPaginaActual(container: HTMLElement) {
+    const total = this.listaFiltrada.length;
+    const totalPages = Math.ceil(total / this.pageSize) || 1;
+
+    if (this.currentPage > totalPages) {
+      this.currentPage = totalPages;
+    }
+    if (this.currentPage < 1) {
+      this.currentPage = 1;
+    }
+
+    const startIdx = total === 0 ? 0 : (this.currentPage - 1) * this.pageSize;
+    const endIdx = Math.min(startIdx + this.pageSize, total);
+    const pagedItems = this.listaFiltrada.slice(startIdx, endIdx);
+
+    // Actualizar barra de paginación
+    const pageStartEl = container.querySelector('#servicios-page-start');
+    const pageEndEl = container.querySelector('#servicios-page-end');
+    const totalCountEl = container.querySelector('#servicios-total-count');
+    const pageCurrentEl = container.querySelector('#servicios-page-current');
+    const btnPrev = container.querySelector('#servicios-btn-prev') as HTMLButtonElement;
+    const btnNext = container.querySelector('#servicios-btn-next') as HTMLButtonElement;
+
+    if (pageStartEl) pageStartEl.textContent = String(total === 0 ? 0 : startIdx + 1);
+    if (pageEndEl) pageEndEl.textContent = String(endIdx);
+    if (totalCountEl) totalCountEl.textContent = String(total);
+    if (pageCurrentEl) pageCurrentEl.textContent = `Pág. ${this.currentPage} de ${totalPages}`;
+    if (btnPrev) btnPrev.disabled = this.currentPage <= 1;
+    if (btnNext) btnNext.disabled = this.currentPage >= totalPages;
+
+    this.renderFilas(container, pagedItems);
   }
 
   private renderFilas(container: HTMLElement, lista: IServicioTransporte[]) {

@@ -34,4 +34,26 @@
       </tbody>
     </table>
   </div>
+
+  <!-- Barra de Paginación de Personas -->
+  <div class="pagination-bar" id="personas-pagination-bar">
+    <div class="pagination-info">
+      Mostrando <span id="personas-page-start">1</span> - <span id="personas-page-end">5</span> de <strong id="personas-total-count">0</strong> personas
+    </div>
+    <div class="pagination-controls">
+      <div class="page-size-selector">
+        <label for="personas-page-size">Por página:</label>
+        <select id="personas-page-size" class="form-select form-select-sm">
+          <option value="5" selected>5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+        </select>
+      </div>
+      <div class="pagination-buttons">
+        <button class="btn btn-sm btn-secondary btn-page-prev" id="personas-btn-prev" disabled>◀ Anterior</button>
+        <span class="page-current" id="personas-page-current">Pág. 1 de 1</span>
+        <button class="btn btn-sm btn-secondary btn-page-next" id="personas-btn-next" disabled>Siguiente ▶</button>
+      </div>
+    </div>
+  </div>
 </div>

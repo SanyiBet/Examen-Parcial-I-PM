@@ -7,6 +7,10 @@ export class FacturaList {
   private onCrearCallback?: () => void;
   private facturaSeleccionada: IFactura | null = null;
 
+  private currentPage = 1;
+  private pageSize = 10;
+  private listaFiltrada: IFactura[] = [];
+
   constructor(handlers?: { onCrear?: () => void }) {
     this.onCrearCallback = handlers?.onCrear;
   }
@@ -22,8 +26,34 @@ export class FacturaList {
     const btnCrear = container.querySelector('#btn-crear-factura');
     const inputSearch = container.querySelector('#factura-search') as HTMLInputElement;
 
+    const btnPrev = container.querySelector('#facturas-btn-prev');
+    const btnNext = container.querySelector('#facturas-btn-next');
+    const selectPageSize = container.querySelector('#facturas-page-size') as HTMLSelectElement;
+
     btnCrear?.addEventListener('click', () => {
       if (this.onCrearCallback) this.onCrearCallback();
+    });
+
+    // Paginación eventos
+    btnPrev?.addEventListener('click', () => {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.renderPaginaActual(container);
+      }
+    });
+
+    btnNext?.addEventListener('click', () => {
+      const totalPages = Math.ceil(this.listaFiltrada.length / this.pageSize) || 1;
+      if (this.currentPage < totalPages) {
+        this.currentPage++;
+        this.renderPaginaActual(container);
+      }
+    });
+
+    selectPageSize?.addEventListener('change', () => {
+      this.pageSize = Number(selectPageSize.value) || 10;
+      this.currentPage = 1;
+      this.renderPaginaActual(container);
     });
 
     inputSearch?.addEventListener('input', () => this.filtrarTabla(container));
@@ -43,14 +73,50 @@ export class FacturaList {
 
   private async cargarTabla(container: HTMLElement) {
     await ListaFacturas.CargarFacturas();
-    this.renderFilas(container, ListaFacturas.Lista);
+    this.listaFiltrada = [...ListaFacturas.Lista];
+    this.currentPage = 1;
+    this.renderPaginaActual(container);
   }
 
   private filtrarTabla(container: HTMLElement) {
     const inputSearch = container.querySelector('#factura-search') as HTMLInputElement;
     const criterio = inputSearch?.value || '';
-    const filtradas = ListaFacturas.Buscar(criterio);
-    this.renderFilas(container, filtradas);
+    this.listaFiltrada = ListaFacturas.Buscar(criterio);
+    this.currentPage = 1;
+    this.renderPaginaActual(container);
+  }
+
+  private renderPaginaActual(container: HTMLElement) {
+    const total = this.listaFiltrada.length;
+    const totalPages = Math.ceil(total / this.pageSize) || 1;
+
+    if (this.currentPage > totalPages) {
+      this.currentPage = totalPages;
+    }
+    if (this.currentPage < 1) {
+      this.currentPage = 1;
+    }
+
+    const startIdx = total === 0 ? 0 : (this.currentPage - 1) * this.pageSize;
+    const endIdx = Math.min(startIdx + this.pageSize, total);
+    const pagedItems = this.listaFiltrada.slice(startIdx, endIdx);
+
+    // Actualizar barra de paginación
+    const pageStartEl = container.querySelector('#facturas-page-start');
+    const pageEndEl = container.querySelector('#facturas-page-end');
+    const totalCountEl = container.querySelector('#facturas-total-count');
+    const pageCurrentEl = container.querySelector('#facturas-page-current');
+    const btnPrev = container.querySelector('#facturas-btn-prev') as HTMLButtonElement;
+    const btnNext = container.querySelector('#facturas-btn-next') as HTMLButtonElement;
+
+    if (pageStartEl) pageStartEl.textContent = String(total === 0 ? 0 : startIdx + 1);
+    if (pageEndEl) pageEndEl.textContent = String(endIdx);
+    if (totalCountEl) totalCountEl.textContent = String(total);
+    if (pageCurrentEl) pageCurrentEl.textContent = `Pág. ${this.currentPage} de ${totalPages}`;
+    if (btnPrev) btnPrev.disabled = this.currentPage <= 1;
+    if (btnNext) btnNext.disabled = this.currentPage >= totalPages;
+
+    this.renderFilas(container, pagedItems);
   }
 
   private renderFilas(container: HTMLElement, lista: IFactura[]) {
