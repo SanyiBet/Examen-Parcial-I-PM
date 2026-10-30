@@ -52,6 +52,30 @@
         </div>
       </div>
 
+      <!-- Sección de Imagen / Foto del Vehículo -->
+      <div class="imagen-vehiculo-card">
+        <div class="imagen-inputs">
+          <label class="form-label" for="v-imagen-url">
+            <span>🖼️ Fotografía / Link de Imagen del Vehículo (Opcional)</span>
+          </label>
+          <input type="url" id="v-imagen-url" class="form-control" placeholder="https://images.unsplash.com/... o enlace directo de imagen">
+          <div class="imagen-presets">
+            <span class="preset-label">Fotos de muestra:</span>
+            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80">🚚 Camión Pesado</button>
+            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=800&q=80">🚛 Tráiler Carga</button>
+            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80">⚡ Furgoneta E-Transit</button>
+            <button type="button" class="btn-preset" data-url="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80">📦 Van Eléctrica</button>
+          </div>
+        </div>
+        <div class="imagen-preview-container">
+          <img id="v-preview-img" src="" alt="Vista previa del vehículo" style="display: none;">
+          <div id="v-preview-placeholder" class="preview-placeholder">
+            <span>📷 Sin imagen</span>
+            <small>Pega un link o selecciona una muestra</small>
+          </div>
+        </div>
+      </div>
+
       <!-- Campos específicos de Camión de Carga -->
       <div id="seccion-camion" class="tipo-fields-section">
         <h4 class="section-title">⚙️ Parámetros de Combustión y Mantenimiento</h4>

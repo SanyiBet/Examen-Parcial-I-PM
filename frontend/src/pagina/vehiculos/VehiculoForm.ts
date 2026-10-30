@@ -28,6 +28,7 @@ export class VehiculoForm {
     const selectTipo = container.querySelector('#v-tipo') as HTMLSelectElement;
     const form = container.querySelector('#vehiculo-form') as HTMLFormElement;
     const btnCancelar = container.querySelector('#btn-cancelar-vehiculo');
+    const inputImagen = container.querySelector('#v-imagen-url') as HTMLInputElement;
 
     selectTipo?.addEventListener('change', () => {
       this.toggleCamposTipo(container, selectTipo.value as TipoVehiculo);
@@ -37,10 +38,49 @@ export class VehiculoForm {
       if (this.onCancelarCallback) this.onCancelarCallback();
     });
 
+    // Vista previa en vivo del link de imagen
+    inputImagen?.addEventListener('input', () => {
+      this.actualizarPreviewImagen(container, inputImagen.value.trim());
+    });
+
+    // Botones de presets de imágenes sugeridas
+    container.querySelectorAll('.btn-preset').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const url = (e.currentTarget as HTMLElement).dataset.url || '';
+        if (inputImagen) {
+          inputImagen.value = url;
+          this.actualizarPreviewImagen(container, url);
+        }
+      });
+    });
+
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
       await this.guardar(container);
     });
+  }
+
+  private actualizarPreviewImagen(container: HTMLElement, url: string) {
+    const img = container.querySelector('#v-preview-img') as HTMLImageElement;
+    const placeholder = container.querySelector('#v-preview-placeholder') as HTMLElement;
+
+    if (!img || !placeholder) return;
+
+    if (url) {
+      img.src = url;
+      img.onload = () => {
+        img.style.display = 'block';
+        placeholder.style.display = 'none';
+      };
+      img.onerror = () => {
+        img.style.display = 'none';
+        placeholder.style.display = 'flex';
+      };
+    } else {
+      img.src = '';
+      img.style.display = 'none';
+      placeholder.style.display = 'flex';
+    }
   }
 
   private toggleCamposTipo(container: HTMLElement, tipo: TipoVehiculo) {
@@ -76,6 +116,12 @@ export class VehiculoForm {
     (container.querySelector('#v-capacidad') as HTMLInputElement).value = String(v.capacidadCargaKg);
     (container.querySelector('#v-kilometraje') as HTMLInputElement).value = String(v.kilometraje);
 
+    const inputImagen = container.querySelector('#v-imagen-url') as HTMLInputElement;
+    if (inputImagen && v.imagenUrl) {
+      inputImagen.value = v.imagenUrl;
+      this.actualizarPreviewImagen(container, v.imagenUrl);
+    }
+
     if (v.tipo === 'CamionCarga') {
       (container.querySelector('#v-consumo-litros') as HTMLInputElement).value = String(v.consumoLitros100Km || '');
       (container.querySelector('#v-precio-litro') as HTMLInputElement).value = String(v.precioLitro || '');
@@ -102,6 +148,7 @@ export class VehiculoForm {
     const anio = Number((container.querySelector('#v-anio') as HTMLInputElement).value);
     const capacidadCargaKg = Number((container.querySelector('#v-capacidad') as HTMLInputElement).value);
     const kilometraje = Number((container.querySelector('#v-kilometraje') as HTMLInputElement).value);
+    const imagenUrl = (container.querySelector('#v-imagen-url') as HTMLInputElement).value.trim();
 
     if (!placa || !marca || !modelo || !capacidadCargaKg) {
       this.mostrarAlerta(alertBox, 'Complete todos los campos obligatorios (*)', 'danger');
@@ -117,6 +164,7 @@ export class VehiculoForm {
       capacidadCargaKg,
       kilometraje,
       estado: this.vehiculoAEditar?.estado || 'Disponible',
+      imagenUrl: imagenUrl || undefined,
     };
 
     if (tipo === 'CamionCarga') {

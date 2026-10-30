@@ -33,6 +33,9 @@ export class VehiculoEntity {
   @Column({ default: 'Disponible' })
   estado: EstadoVehiculo;
 
+  @Column({ nullable: true })
+  imagenUrl?: string;
+
   // Atributos de Camión de Carga
   @Column({ type: 'float', nullable: true })
   consumoLitros100Km?: number;

@@ -1,24 +1,68 @@
 <div class="vehiculos-list-page">
   <div class="page-title-bar">
     <div>
-      <h2 class="page-title">Gestión de Flota de Vehículos</h2>
-      <p class="page-subtitle">Listado, búsqueda por placa y evaluación de eficiencia operativa</p>
+      <h2 class="page-title">Flota de Vehículos TRANSLOGIC S.A.</h2>
+      <p class="page-subtitle">Showroom visual, control de flota, telemetría de baterías y eficiencia energética</p>
     </div>
-    <button id="btn-crear-vehiculo" class="btn btn-primary">
-      <span>➕</span> Nuevo Vehículo
-    </button>
+    <div class="header-actions">
+      <!-- Toggle de vistas -->
+      <div class="view-toggle-group">
+        <button id="btn-view-cards" class="btn-toggle active" title="Vista de Tarjetas con Foto">
+          <span>🖼️ Galería</span>
+        </button>
+        <button id="btn-view-table" class="btn-toggle" title="Vista en Tabla">
+          <span>📋 Tabla</span>
+        </button>
+      </div>
+      <button id="btn-crear-vehiculo" class="btn btn-primary">
+        <span>➕</span> Nuevo Vehículo
+      </button>
+    </div>
+  </div>
+
+  <!-- Mini métricas de flota -->
+  <div class="flota-stats-pills">
+    <div class="stat-pill">
+      <span class="pill-dot dot-blue"></span>
+      <span class="pill-label">Total Unidades:</span>
+      <strong id="stat-total-vehiculos">0</strong>
+    </div>
+    <div class="stat-pill">
+      <span class="pill-dot dot-emerald"></span>
+      <span class="pill-label">100% Eléctricos:</span>
+      <strong id="stat-electricos">0</strong>
+    </div>
+    <div class="stat-pill">
+      <span class="pill-dot dot-amber"></span>
+      <span class="pill-label">Diésel Carga:</span>
+      <strong id="stat-diesel">0</strong>
+    </div>
+    <div class="stat-pill">
+      <span class="pill-dot dot-cyan"></span>
+      <span class="pill-label">Disponibles Ahora:</span>
+      <strong id="stat-disponibles">0</strong>
+    </div>
   </div>
 
   <!-- Barra de búsqueda y filtros -->
   <div class="search-filter-card">
     <div class="search-box">
-      <input type="text" id="vehiculo-search" class="form-control" placeholder="Buscar por placa, marca o modelo...">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="vehiculo-search" class="form-control" placeholder="Buscar por placa, marca o modelo (ej: Volvo, PBX, Ford)...">
     </div>
     <div class="filter-box">
       <select id="vehiculo-tipo-filter" class="form-select">
-        <option value="">Todos los tipos</option>
-        <option value="CamionCarga">Camiones de Carga (Combustión)</option>
-        <option value="FurgonetaElectrica">Furgonetas Eléctricas</option>
+        <option value="">Todos los tipos de propulsión</option>
+        <option value="CamionCarga">⛽ Camiones de Carga (Combustión Diésel)</option>
+        <option value="FurgonetaElectrica">⚡ Furgonetas Eléctricas Cero Emisiones</option>
+      </select>
+    </div>
+    <div class="filter-box">
+      <select id="vehiculo-estado-filter" class="form-select">
+        <option value="">Todos los estados</option>
+        <option value="Disponible">🟢 Disponible</option>
+        <option value="EnServicio">🟡 En Servicio</option>
+        <option value="Mantenimiento">🔴 Mantenimiento</option>
       </select>
     </div>
   </div>
@@ -36,11 +80,19 @@
     </div>
   </div>
 
-  <!-- Tabla de Vehículos -->
-  <div class="table-responsive">
+  <!-- Vista 1: Galería de Tarjetas Visuales (Showroom) -->
+  <div id="vehiculos-cards-view" class="vehiculos-gallery">
+    <div class="gallery-loading text-center py-5">
+      <p class="mt-2 text-muted">Cargando flota de vehículos...</p>
+    </div>
+  </div>
+
+  <!-- Vista 2: Tabla tradicional -->
+  <div id="vehiculos-table-view" class="table-responsive" style="display: none;">
     <table class="table-custom">
       <thead>
         <tr>
+          <th>Foto</th>
           <th>Placa</th>
           <th>Tipo</th>
           <th>Marca / Modelo</th>
@@ -52,7 +104,7 @@
         </tr>
       </thead>
       <tbody id="vehiculos-table-body">
-        <tr><td colspan="8" class="text-center py-4">Cargando flota de vehículos...</td></tr>
+        <tr><td colspan="9" class="text-center py-4">Cargando flota de vehículos...</td></tr>
       </tbody>
     </table>
   </div>

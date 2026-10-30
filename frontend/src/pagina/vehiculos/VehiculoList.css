@@ -9,20 +9,100 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 16px;
 }
 
 .page-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: #0f172a;
+  letter-spacing: -0.3px;
 }
 
 .page-subtitle {
   font-size: 13px;
   color: #64748b;
+  margin-top: 3px;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Switcher de vistas */
+.view-toggle-group {
+  display: inline-flex;
+  background: #f1f5f9;
+  padding: 3px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-toggle {
+  background: transparent;
+  border: none;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-toggle.active {
+  background: #ffffff;
+  color: #2563eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.btn-toggle:hover:not(.active) {
+  color: #0f172a;
+}
+
+/* Mini métricas superiores */
+.flota-stats-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.stat-pill {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 8px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.stat-pill strong {
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.dot-blue { background: #3b82f6; }
+.dot-emerald { background: #10b981; }
+.dot-amber { background: #f59e0b; }
+.dot-cyan { background: #06b6d4; }
+
+/* Barra de búsqueda y filtros */
 .search-filter-card {
   display: flex;
   gap: 12px;
@@ -31,20 +111,252 @@
   padding: 14px 18px;
   border-radius: 12px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .search-box {
   flex: 1;
-  min-width: 250px;
+  min-width: 260px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 14px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.search-box input {
+  padding-left: 36px;
 }
 
 .filter-box {
-  min-width: 200px;
+  min-width: 210px;
 }
 
-.actions-cell {
+/* Galería de Tarjetas de Flota */
+.vehiculos-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 22px;
+}
+
+.vehiculo-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
-  gap: 6px;
+  flex-direction: column;
+}
+
+.vehiculo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -4px rgba(15, 23, 42, 0.1);
+  border-color: #cbd5e1;
+}
+
+/* Media de la tarjeta */
+.vehiculo-card-media {
+  position: relative;
+  height: 190px;
+  background: #f1f5f9;
+  overflow: hidden;
+}
+
+.vehiculo-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.vehiculo-card:hover .vehiculo-card-media img {
+  transform: scale(1.04);
+}
+
+.card-badge-top-left {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+}
+
+.card-badge-top-right {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+}
+
+.glass-badge {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.badge-electric {
+  color: #047857;
+  background: rgba(236, 253, 245, 0.95);
+  border-color: #a7f3d0;
+}
+
+.badge-combustion {
+  color: #b45309;
+  background: rgba(254, 243, 199, 0.95);
+  border-color: #fde68a;
+}
+
+/* Contenido de la tarjeta */
+.vehiculo-card-content {
+  padding: 18px 20px 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.card-header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.card-vehiculo-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.25;
+}
+
+.card-vehiculo-sub {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 3px;
+}
+
+.placa-badge {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 800;
+  color: #1e3a8a;
+  background: #eff6ff;
+  border: 1.5px solid #93c5fd;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Telemetría y eficiencia */
+.telemetria-container {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.telemetria-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.telemetria-label {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.telemetria-val {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.battery-bar-container {
+  width: 100%;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.battery-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.4s ease;
+}
+
+.fill-high { background: linear-gradient(90deg, #10b981, #059669); }
+.fill-mid { background: linear-gradient(90deg, #f59e0b, #d97706); }
+.fill-low { background: linear-gradient(90deg, #ef4444, #dc2626); }
+
+/* Specs pills */
+.specs-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.spec-item-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #64748b;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.spec-item-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 2px;
+}
+
+/* Footer con acciones */
+.vehiculo-card-footer {
+  padding: 12px 20px 16px 20px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  gap: 10px;
+}
+
+.vehiculo-card-footer button {
+  flex: 1;
+}
+
+/* Tabla Foto Thumbnail */
+.table-thumb {
+  width: 48px;
+  height: 34px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid #e2e8f0;
+  background: #f1f5f9;
+  display: block;
 }
 
 /* Modal styles */

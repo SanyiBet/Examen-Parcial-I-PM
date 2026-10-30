@@ -11,6 +11,7 @@ export interface IVehiculo {
   kilometraje: number;
   tipo: TipoVehiculo;
   estado: EstadoVehiculo;
+  imagenUrl?: string;
 
   // Atributos de Camión de carga
   consumoLitros100Km?: number;
@@ -36,6 +37,7 @@ export abstract class VehiculoBase implements IVehiculo {
   kilometraje: number;
   tipo: TipoVehiculo;
   estado: EstadoVehiculo;
+  imagenUrl?: string;
 
   constructor(data: IVehiculo) {
     this.id = data.id;
@@ -47,6 +49,7 @@ export abstract class VehiculoBase implements IVehiculo {
     this.kilometraje = data.kilometraje;
     this.tipo = data.tipo;
     this.estado = data.estado || 'Disponible';
+    this.imagenUrl = data.imagenUrl;
   }
 
   abstract calcularCostoOperativo(distanciaKm: number): number;
