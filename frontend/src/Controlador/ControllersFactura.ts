@@ -60,30 +60,31 @@ export class ControllersFactura {
     // ==========================================
     // Logo / Monograma TRANSLOGIC
     doc.setFillColor(37, 99, 235); // Azul Primario #2563eb
-    doc.roundedRect(margin, 12, 18, 18, 3, 3, 'F');
+    doc.roundedRect(margin, 12, 16, 16, 3, 3, 'F');
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
+    doc.setFontSize(13);
     doc.setTextColor(255, 255, 255);
-    doc.text('TL', margin + 9, 24, { align: 'center' });
+    doc.text('TL', margin + 8, 22.5, { align: 'center' });
 
     // Nombre de la Empresa
-    doc.setFontSize(16);
+    doc.setFontSize(15);
     doc.setTextColor(15, 23, 42); // Slate-900
-    doc.text('TRANSLOGIC S.A.', margin + 22, 19);
+    doc.text('TRANSLOGIC S.A.', margin + 20, 18);
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8.5);
+    doc.setFontSize(8);
     doc.setTextColor(100, 116, 139); // Slate-500
-    doc.text('Transporte Pesado y Flota Eléctrica Cero Emisiones', margin + 22, 24);
-    doc.text('RUC: 1792847592001  |  Matriz: Av. Amazonas N34-12 y República, Quito', margin + 22, 28);
-    doc.text('Tel: +593 (02) 298-7654  |  Email: facturacion@translogic.com.ec', margin + 22, 32);
+    doc.text('Transporte Pesado y Flota Eléctrica', margin + 20, 23);
+    doc.text('RUC: 1792847592001', margin + 20, 27);
+    doc.text('Matriz: Av. Amazonas y República, Quito', margin + 20, 31);
+    doc.text('Tel: (02) 298-7654  |  facturas@translogic.com', margin + 20, 35);
 
     // ==========================================
     // 2. RECUADRO DERECHO: FACTURA ELECTRÓNICA
     // ==========================================
-    const boxX = 125;
+    const boxX = 126;
     const boxY = 12;
-    const boxWidth = 71;
+    const boxWidth = 70;
     const boxHeight = 28;
 
     doc.setFillColor(248, 250, 252); // Fondo suave
@@ -94,16 +95,16 @@ export class ControllersFactura {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
     doc.setTextColor(30, 58, 138); // Azul oscuro
-    doc.text('FACTURA ELECTRÓNICA', boxX + (boxWidth / 2), boxY + 6, { align: 'center' });
+    doc.text('FACTURA ELECTRÓNICA', boxX + (boxWidth / 2), boxY + 6.5, { align: 'center' });
 
     doc.setFontSize(10.5);
     doc.setTextColor(15, 23, 42);
-    doc.text(`N° ${factura.codigo}`, boxX + (boxWidth / 2), boxY + 12, { align: 'center' });
+    doc.text(`N° ${factura.codigo}`, boxX + (boxWidth / 2), boxY + 12.5, { align: 'center' });
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
     doc.setTextColor(71, 85, 105);
-    doc.text(`Fecha de Emisión: ${factura.fecha}`, boxX + 6, boxY + 18);
+    doc.text(`Fecha Emisión: ${factura.fecha}`, boxX + 6, boxY + 18);
     doc.text('Ambiente: PRODUCCIÓN (SIMULADO)', boxX + 6, boxY + 22);
     doc.text('Emisión: NORMAL', boxX + 6, boxY + 25.5);
 
@@ -134,29 +135,29 @@ export class ControllersFactura {
     doc.setTextColor(71, 85, 105);
 
     // Columna 1
-    doc.text('Razón Social / Nombre:', margin + 5, clientY + 11.5);
+    doc.text('Razón Social:', margin + 5, clientY + 11.5);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(15, 23, 42);
-    doc.text(factura.cliente?.nombre || 'Consumidor Final', margin + 42, clientY + 11.5);
+    doc.text(factura.cliente?.nombre || 'Consumidor Final', margin + 32, clientY + 11.5, { maxWidth: 58 });
 
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(71, 85, 105);
-    doc.text('RUC / Identificación:', margin + 5, clientY + 17.5);
+    doc.text('RUC / ID:', margin + 5, clientY + 17.5);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(15, 23, 42);
-    doc.text(factura.cliente?.identificacion || '9999999999999', margin + 42, clientY + 17.5);
+    doc.text(factura.cliente?.identificacion || '9999999999999', margin + 32, clientY + 17.5, { maxWidth: 58 });
 
     // Columna 2
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(71, 85, 105);
-    doc.text('Correo Electrónico:', margin + 98, clientY + 11.5);
+    doc.text('Correo:', margin + 96, clientY + 11.5);
     doc.setTextColor(15, 23, 42);
-    doc.text(factura.cliente?.correo || 'contacto@empresa.com', margin + 128, clientY + 11.5);
+    doc.text(factura.cliente?.correo || 'contacto@empresa.com', margin + 114, clientY + 11.5, { maxWidth: 64 });
 
     doc.setTextColor(71, 85, 105);
-    doc.text('Teléfono / Contacto:', margin + 98, clientY + 17.5);
+    doc.text('Teléfono:', margin + 96, clientY + 17.5);
     doc.setTextColor(15, 23, 42);
-    doc.text(factura.cliente?.telefono || '0991234567', margin + 128, clientY + 17.5);
+    doc.text(factura.cliente?.telefono || '0991234567', margin + 114, clientY + 17.5, { maxWidth: 64 });
 
     // ==========================================
     // 4. TABLA DE SERVICIOS COMPLETADOS (CON AUTOTABLE)
@@ -209,66 +210,69 @@ export class ControllersFactura {
       margin: { left: margin, right: margin },
     });
 
-    // Posición dinámica después de la tabla
-    let tableY = ((doc as any).lastAutoTable?.finalY || 130) + 7;
+    // ==========================================
+    // 5. SECCIÓN INFERIOR: REGLAS Y TOTALES
+    // ==========================================
+    const afterTableY = ((doc as any).lastAutoTable?.finalY || 130) + 6;
 
     // Caja izquierda: Observaciones y reglas de negocio aplicadas
-    const notesWidth = 92;
+    const notesX = margin;
+    const notesW = 90;
+    const notesH = 41;
     doc.setFillColor(248, 250, 252);
     doc.setDrawColor(226, 232, 240);
-    doc.roundedRect(margin, tableY, notesWidth, 38, 2, 2, 'FD');
+    doc.setLineWidth(0.3);
+    doc.roundedRect(notesX, afterTableY, notesW, notesH, 2, 2, 'FD');
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(8);
     doc.setTextColor(30, 41, 59);
-    doc.text('INFORMACIÓN DE REGLAS DE NEGOCIO (REQ-04):', margin + 4, tableY + 6);
+    doc.text('INFORMACIÓN DE REGLAS DE NEGOCIO (REQ-04):', notesX + 4, afterTableY + 6);
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7.5);
-    doc.setTextColor(71, 85, 105);
-    doc.text('• Recargos: +6% por trayecto >300 km | +12% si se ejecutó en domingo.', margin + 4, tableY + 12);
-    doc.text(`• Descuento por Volumen: ${factura.porcentajeDescuento}% aplicado al subtotal consolidado.`, margin + 4, tableY + 17);
-    doc.text('  (3 a 5 servicios: 5% desc. | 6 o más servicios: 10% desc.)', margin + 6, tableY + 21);
-    doc.text('• Impuesto: IVA 15% conforme a normativa tributaria vigente.', margin + 4, tableY + 26);
-    doc.text('• Transacción: Operación atómica con registro en base de datos PostgreSQL.', margin + 4, tableY + 31);
-    doc.text('• Forma de Pago: Transferencia Bancaria / Crédito 15 días.', margin + 4, tableY + 35);
-
-    // Caja derecha: Desglose exacto de importes
-    const totX = 112;
-    const totValX = margin + contentWidth - 4;
-    let totY = tableY + 3;
-
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8.5);
+    doc.setFontSize(7.2);
     doc.setTextColor(71, 85, 105);
 
-    doc.text('Subtotal Servicios:', totX, totY);
-    doc.text(`$${Number(factura.subtotal).toFixed(2)}`, totValX, totY, { align: 'right' });
-    totY += 6;
+    const rules = [
+      '• Recargos: +6% si trayecto >300 km | +12% si domingo.',
+      `• Descuento por Volumen: ${factura.porcentajeDescuento}% al consolidado.`,
+      '  (3-5 servicios: 5% desc. | 6+ servicios: 10% desc.)',
+      `• Impuesto IVA: ${factura.porcentajeImpuesto}% según normativa legal SRI.`,
+      '• Transacción: Registro atómico en PostgreSQL.',
+      '• Forma de Pago: Transferencia Bancaria (15 días).',
+    ];
 
-    doc.text('Recargos (+300km / Domingo):', totX, totY);
-    doc.text(`+$${Number(factura.recargos).toFixed(2)}`, totValX, totY, { align: 'right' });
-    totY += 6;
+    let currentRuleY = afterTableY + 11.5;
+    rules.forEach((rule) => {
+      doc.text(rule, notesX + 4, currentRuleY, { maxWidth: 82 });
+      currentRuleY += 5;
+    });
 
-    doc.text(`Descuento Cliente (${factura.porcentajeDescuento}%):`, totX, totY);
-    doc.setTextColor(4, 120, 87); // Verde #047857
-    doc.text(`-$${Number(factura.descuento).toFixed(2)}`, totValX, totY, { align: 'right' });
-    totY += 6;
-
-    doc.setTextColor(71, 85, 105);
-    doc.text(`Impuesto IVA (${factura.porcentajeImpuesto}%):`, totX, totY);
-    doc.text(`+$${Number(factura.impuesto).toFixed(2)}`, totValX, totY, { align: 'right' });
-    totY += 8;
-
-    // Caja del Total Final
-    doc.setFillColor(37, 99, 235); // Azul corporativo
-    doc.roundedRect(totX - 2, totY - 4.5, contentWidth - totX + margin + 2, 9, 1.5, 1.5, 'F');
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10.5);
-    doc.setTextColor(255, 255, 255);
-    doc.text('TOTAL A PAGAR:', totX + 2, totY + 1.8);
-    doc.text(`$${Number(factura.total).toFixed(2)} USD`, totValX, totY + 1.8, { align: 'right' });
+    // Caja derecha: Desglose exacto de importes usando autoTable (sin colisiones)
+    autoTable(doc, {
+      startY: afterTableY,
+      margin: { left: 108, right: margin },
+      body: [
+        ['Subtotal Servicios:', { content: `$${Number(factura.subtotal).toFixed(2)}`, styles: { halign: 'right' } }],
+        ['Recargos (+300km/Dom):', { content: `+$${Number(factura.recargos).toFixed(2)}`, styles: { halign: 'right' } }],
+        [`Descuento Cliente (${factura.porcentajeDescuento}%):`, { content: `-$${Number(factura.descuento).toFixed(2)}`, styles: { halign: 'right', textColor: [4, 120, 87], fontStyle: 'bold' } }],
+        [`Impuesto IVA (${factura.porcentajeImpuesto}%):`, { content: `+$${Number(factura.impuesto).toFixed(2)}`, styles: { halign: 'right' } }],
+        [
+          { content: 'TOTAL A PAGAR:', styles: { fontStyle: 'bold', fillColor: [37, 99, 235], textColor: [255, 255, 255], fontSize: 8.5 } },
+          { content: `$${Number(factura.total).toFixed(2)} USD`, styles: { fontStyle: 'bold', halign: 'right', fillColor: [37, 99, 235], textColor: [255, 255, 255], fontSize: 9 } }
+        ],
+      ],
+      theme: 'plain',
+      styles: {
+        fontSize: 7.8,
+        cellPadding: 1.8,
+        textColor: [71, 85, 105],
+      },
+      columnStyles: {
+        0: { cellWidth: 50 },
+        1: { cellWidth: 38 },
+      },
+    });
 
     // ==========================================
     // 6. PIE DE PÁGINA: AUTORIZACIÓN Y FIRMA
