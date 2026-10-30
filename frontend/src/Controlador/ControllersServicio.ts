@@ -32,6 +32,11 @@ export class ControllersServicio {
     }
   }
 
+  async ObtenerServicioPorId(id: string): Promise<IServicioTransporte> {
+    const s = await ApiClient.get<IServicioTransporte>(`/servicios/${id}`);
+    return s;
+  }
+
   async RegistrarServicio(servicio: Partial<IServicioTransporte>): Promise<IServicioTransporte> {
     const nuevo = await ApiClient.post<IServicioTransporte>('/servicios', servicio);
     this.Lista.unshift(nuevo);

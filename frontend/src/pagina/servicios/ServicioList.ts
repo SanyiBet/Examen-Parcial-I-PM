@@ -279,15 +279,27 @@ export class ServicioList {
     content.innerHTML = `<p class="text-center py-3">Consultando historial en el servidor...</p>`;
 
     try {
-      const servicio = await ListaServicios.CargarServicios();
-      const s = servicio.find(x => x.id === servicioId);
-
+      const s = await ListaServicios.ObtenerServicioPorId(servicioId);
       title.textContent = `Auditoría de Estados: ${s?.codigo || 'Servicio'}`;
 
       // Detalle del historial
-      const historial = (s as any)?.historial || [];
+      const historial = ((s as any)?.historial || []) as any[];
+      historial.sort((a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime());
+
       if (historial.length === 0) {
-        content.innerHTML = `<p class="text-muted text-center py-2">No hay transiciones de estado registradas aún.</p>`;
+        content.innerHTML = `
+          <div style="text-align: center; padding: 25px 15px; color: #64748b;">
+            <div style="font-size: 28px; margin-bottom: 8px;">⏳</div>
+            <p style="font-weight: 600; color: #1e293b; margin-bottom: 6px;">
+              Este servicio se encuentra en estado inicial: <span class="badge badge-info">${s?.estado || 'Programado'}</span>
+            </p>
+            <p style="font-size: 12px; max-width: 420px; margin: 0 auto; line-height: 1.5;">
+              Aún no ha tenido transiciones adicionales. Para generar auditoría en vivo, presiona los botones de acción como 
+              <strong>"Iniciar Ruta"</strong> o <strong>"Finalizar Entrega"</strong>. El sistema registrará de forma inmutable 
+              el estado anterior, nuevo estado, hora exacta y responsable en PostgreSQL (REQ-02 / REQ-06).
+            </p>
+          </div>
+        `;
         return;
       }
 
@@ -296,17 +308,17 @@ export class ServicioList {
           ${historial.map((h: any) => `
             <div class="timeline-item">
               <div class="timeline-dot"></div>
-              <div class="timeline-time">${new Date(h.fecha).toLocaleString()}</div>
+              <div class="timeline-time">📅 ${new Date(h.fecha).toLocaleString()}</div>
               <div class="timeline-text">
-                Transición: <span class="badge badge-secondary">${h.estadoAnterior}</span> → <span class="badge badge-info">${h.estadoNuevo}</span>
+                Transición: <span class="badge badge-secondary">${h.estadoAnterior}</span> ➔ <span class="badge badge-info">${h.estadoNuevo}</span>
               </div>
-              <div class="timeline-notes">Responsable: ${h.usuarioId} | Notas: ${h.notas || 'Sin observaciones'}</div>
+              <div class="timeline-notes">👤 <strong>Responsable:</strong> ${h.usuarioId || 'Operador'} | 📝 <strong>Notas:</strong> ${h.notas || 'Sin observaciones'}</div>
             </div>
           `).join('')}
         </div>
       `;
     } catch (e) {
-      content.innerHTML = `<p class="text-danger text-center">Error al cargar auditoría</p>`;
+      content.innerHTML = `<p class="text-danger text-center">Error al consultar auditoría en el servidor.</p>`;
     }
   }
 }

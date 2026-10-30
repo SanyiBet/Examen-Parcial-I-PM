@@ -25,7 +25,8 @@ export class ServiciosService {
   async findAll(query?: { estado?: EstadoServicio; clienteId?: string; vehiculoId?: string; page?: number; limit?: number }) {
     const qb = this.servicioRepo.createQueryBuilder('s')
       .leftJoinAndSelect('s.cliente', 'cliente')
-      .leftJoinAndSelect('s.vehiculo', 'vehiculo');
+      .leftJoinAndSelect('s.vehiculo', 'vehiculo')
+      .leftJoinAndSelect('s.historial', 'historial');
 
     if (query?.estado) {
       qb.andWhere('s.estado = :estado', { estado: query.estado });
